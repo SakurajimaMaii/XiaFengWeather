@@ -1,0 +1,104 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 31
+    buildToolsVersion '30.0.3'
+
+    defaultConfig {
+        applicationId "com.gcode.gweather"
+        minSdkVersion 23
+        //noinspection OldTargetApi
+        targetSdkVersion 31
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true //打开混淆
+            shrinkResources true //打开资源压缩
+            buildConfigField "boolean", "LOG_DEBUG", "false" //不显示log
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_11
+    }
+
+    //开启dataBinding
+    dataBinding {
+        enabled = true
+    }
+    packagingOptions {
+        resources {
+            excludes += ['META-INF/*.kotlin_module']
+        }
+    }
+
+    namespace 'com.gcode.gweather'
+}
+
+dependencies {
+    // Kotlin
+    implementation 'androidx.activity:activity-ktx:1.4.0'
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.viewpager2:viewpager2:1.1.0-beta01'
+    //noinspection GradleDependency
+    annotationProcessor 'com.android.databinding:compiler:4.0.1'
+    implementation 'androidx.annotation:annotation:1.3.0'
+    //底部导航栏
+    implementation 'nl.joery.animatedbottombar:library:1.1.0'
+    //donut甜甜圈库
+    implementation 'app.futured.donut:donut:2.2.0'
+    //天气
+    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.2'
+    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    //支持ViewModel
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.0'
+    // 渐变色字体
+    implementation 'io.github.weilianyang:gradienttext:1.0.2'
+    // 注意：分包之后不会有默认的Header和Footer需要手动添加！还是原来的三种方法！
+    implementation 'com.scwang.smart:refresh-layout-kernel:2.0.3'      //核心必须依赖
+    implementation 'com.scwang.smart:refresh-header-radar:2.0.3'       //雷达刷新头
+    // 申请权限
+    implementation 'com.permissionx.guolindev:permissionx:1.4.0'
+    // NavigationView
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+    // 高德地图
+    implementation 'com.amap.api:location:5.6.0'
+    // AAChart
+    implementation 'com.github.AAChartModel:AAChartCore-Kotlin:-SNAPSHOT'
+    // 协程
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2-native-mt'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2-native-mt'
+    // 工具类
+    implementation 'io.github.sakurajimamaii:VastTools:0.0.3'
+    implementation 'io.github.sakurajimamaii:VastAdapter:0.0.1'
+    // Testing Fragments in Isolation
+    debugImplementation "androidx.fragment:fragment-testing:1.4.0-beta01"
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+}

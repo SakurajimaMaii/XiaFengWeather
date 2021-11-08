@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activity.SearchCityActivity"
+        android:background="@drawable/main_background">
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:iconifiedByDefault="false"
+            android:focusable="auto"
+            android:searchIcon="@drawable/ic_search"
+            android:goIcon="@drawable/ic_go"
+            android:closeIcon="@drawable/ic_cancel"
+            android:queryHint="请输入要搜索的城市"
+            android:background="@drawable/searchview_background"
+            android:alpha="0.85"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cityList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/searchView"/>
+    </RelativeLayout>
+</layout>

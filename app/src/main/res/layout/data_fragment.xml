@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ScrollView
+            android:id="@+id/home_activity_data_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/main_background"
+            tools:context="com.gcode.gweather.fragment.DataFragment"
+            tools:ignore="ScrollViewCount">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/CustomizePageTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/weather"
+                    android:textColor="@color/white" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"
+                    app:cardCornerRadius="10sp"
+                    app:cardElevation="5sp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/weather_background">
+
+                        <ImageView
+                            android:id="@+id/weatherIcon"
+                            android:layout_width="100sp"
+                            android:layout_height="100sp"
+                            android:contentDescription="@string/weather_icon"
+                            android:src="@drawable/sun"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/temperatureValue" />
+
+                        <TextView
+                            android:id="@+id/weatherValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20sp"
+                            android:layout_marginBottom="10sp"
+                            android:textColor="#FFFFFF"
+                            android:textSize="15sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="@id/weatherIcon"
+                            app:layout_constraintTop_toBottomOf="@id/weatherIcon" />
+
+                        <com.william.gradient.GradientTextView
+                            android:id="@+id/temperatureValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10sp"
+                            android:layout_marginEnd="30sp"
+                            android:gravity="center"
+                            android:textSize="80sp"
+                            android:textStyle="bold"
+                            app:gradient_animate="false"
+                            app:gradient_direction="topToBottom"
+                            app:gradient_endColor="#FFFFFF"
+                            app:gradient_speed="normal"
+                            app:gradient_startColor="#FFFFFF"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.william.gradient.GradientTextView
+                            android:id="@+id/feelsLikeValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:textSize="15sp"
+                            app:gradient_animate="false"
+                            app:gradient_direction="topToBottom"
+                            app:gradient_endColor="#FFFFFF"
+                            app:gradient_speed="normal"
+                            app:gradient_startColor="#FFFFFF"
+                            app:layout_constraintBottom_toTopOf="@id/weatherValue"
+                            app:layout_constraintLeft_toLeftOf="@id/temperatureValue"
+                            app:layout_constraintTop_toBottomOf="@id/temperatureValue" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/firstDataCardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"
+                    app:cardCornerRadius="10sp"
+                    app:cardElevation="5sp">
+                    <!--设置padding补全不足-->
+                    <LinearLayout
+                        android:id="@+id/DataLinearLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:background="#152C39"
+                        android:padding="6sp">
+
+                        <LinearLayout
+                            android:id="@+id/visibilityData"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <com.william.gradient.GradientTextView
+                                android:id="@+id/visibilityValue"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:text="@string/test"
+                                app:gradient_animate="false"
+                                app:gradient_direction="topToBottom"
+                                app:gradient_endColor="#FF7400"
+                                app:gradient_speed="normal"
+                                app:gradient_startColor="#FFB273" />
+
+                            <TextView
+                                android:id="@+id/visibilityName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:text="@string/visibility"
+                                android:textColor="@color/white" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/humidityData"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <com.william.gradient.GradientTextView
+                                android:id="@+id/humidityValue"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:text="@string/test"
+                                app:gradient_animate="false"
+                                app:gradient_direction="topToBottom"
+                                app:gradient_endColor="#0C5DA5"
+                                app:gradient_speed="normal"
+                                app:gradient_startColor="#3AA6D0" />
+
+                            <TextView
+                                android:id="@+id/humidityName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:text="@string/humidity"
+                                android:textColor="@color/white" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/windSpeedData"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <com.william.gradient.GradientTextView
+                                android:id="@+id/windSpeedValue"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:text="@string/test"
+                                app:gradient_animate="false"
+                                app:gradient_direction="topToBottom"
+                                app:gradient_endColor="#7516A5"
+                                app:gradient_speed="normal"
+                                app:gradient_startColor="#F96DFE" />
+
+                            <TextView
+                                android:id="@+id/windSpeedName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:text="@string/wind_speed"
+                                android:textColor="@color/white" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"
+                    app:cardCornerRadius="10sp"
+                    app:cardElevation="5sp">
+
+                    <com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
+                        android:id="@+id/airQualityChartView"
+                        android:layout_width="match_parent"
+                        android:layout_height="600dp" />
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+        </ScrollView>
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+</layout>

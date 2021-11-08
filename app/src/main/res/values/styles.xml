@@ -1,0 +1,31 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/main_dark</item>
+        <item name="colorPrimaryDark">@color/main_dark</item>
+        <item name="colorAccent">@color/main_dark</item>
+    </style>
+
+    <style name="CustomizePageTitle">
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_margin">10sp</item>
+        <item name="android:textColor">#171e2f</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="MyCardView" parent="CardView">
+        <item name="cardCornerRadius">5dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
+    </style>
+    <style name="DailyWeatherCardView" parent="CardView">
+        <item name="cardCornerRadius">10dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_marginStart">5dp</item>
+        <item name="android:layout_marginEnd">5dp</item>
+        <item name="cardBackgroundColor">#152C39</item>
+    </style>
+</resources>

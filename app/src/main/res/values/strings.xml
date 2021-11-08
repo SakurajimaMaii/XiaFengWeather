@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">夏风天气</string>
+    <string name="test">测试</string>
+    <string name="humidity">湿度</string>
+    <string name="data">数据</string>
+    <string name="home">首页</string>
+    <string name="wind_speed">风速</string>
+    <string name="weather_icon">天气图标</string>
+    <string name="weather">天气</string>
+    <string name="visibility">能见度</string>
+    <!--天气图标-->
+    <string name="ic_wind_speed">&#xe782;</string>
+    <string name="ic_humidity">&#xe79e;</string>
+    <string name="ic_sunny_day">&#xe8bd;</string>
+    <string name="ic_cloudy_day">&#xe8bb;</string>
+    <string name="ic_partly_cloudy">&#xe8b9;</string>
+    <string name="ic_fog">&#xe8a8;</string>
+    <string name="ic_shower">&#xe8af;</string>
+    <!--侧边栏-->
+    <!--图标名称-->
+    <string name="ic_spin_list">旋转列表</string>
+    <!--DataFragment页面-->
+    <string name="temperature_value">%s℃</string>
+    <string name="feelslike_temperature_value">体感温度 %s℃</string>
+    <string name="visibility_value">%skm</string>
+    <string name="wind_speed_value">%skm/h</string>
+    <string name="en_hans_weather_value">%s %s</string>
+    <!--HomeFragment页面-->
+    <string name="daily_high_temperature">%s℃</string>
+    <string name="daily_low_temperature">最低温度%s℃</string>
+    <string name="daily_humidity">%s％</string>
+    <string name="daily_wind_speed">%skm/h</string>
+    <string name="weather_forecast_for_the_last_five_days_hans">最近五天的天气预报</string>
+    <string name="weather_forecast_for_the_last_five_days_en">Weather forecast for the last five days</string>
+    <string name="city">城市</string>
+    <string name="now_weather">当前天气实况</string>
+    <!--城市item图标-->
+    <string name="ic_city_item_city_nation">&#xe625;</string>
+    <string name="ic_city_item_city_id">&#xe726;</string>
+    <string name="ic_city_item_city_utc">&#xe640;</string>
+    <string name="ic_city_item_administrative_attribution">&#xe88a;</string>
+    <string name="ic_city_item_city_name">&#xe603;</string>
+    <string name="ic_city_item_city_area">&#xe608;</string>
+    <!--字体文件路径-->
+    <string name="iconWeather">fonts/iconWeather.ttf</string>
+    <string name="iconCity">fonts/iconCity.ttf</string>
+</resources>

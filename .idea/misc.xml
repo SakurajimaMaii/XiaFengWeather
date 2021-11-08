@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/GWeather/app/src/main/res/layout/data_fragment.xml" value="0.16691995947315097" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/GWeather/app/src/main/res/layout/home_activity.xml" value="0.32760416666666664" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/GWeather/app/src/main/res/layout/home_fragment.xml" value="0.16691995947315097" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/drawable/background.xml" value="0.3640625" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/drawable/button_white_background_selector.xml" value="0.3203125" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/drawable/ic_cancel.xml" value="0.3640625" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/drawable/ic_clear_list.xml" value="0.3020833333333333" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/drawable/ic_exit.xml" value="0.3640625" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/drawable/ic_go.xml" value="0.3203125" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/drawable/ic_search.xml" value="0.3203125" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/drawable/ic_spin.xml" value="0.334375" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/drawable/searchview_background.xml" value="0.3203125" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/layout-v24/activity_search_city.xml" value="0.30416666666666664" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/layout-v28/activity_search_city.xml" value="0.30416666666666664" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/layout/activity_add_city.xml" value="0.34791666666666665" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/layout/activity_home.xml" value="0.34791666666666665" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/layout/activity_search_city.xml" value="0.30416666666666664" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/layout/activity_start.xml" value="0.34791666666666665" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/layout/city_fragment.xml" value="0.19157608695652173" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/layout/data_fragment.xml" value="0.25" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/layout/home_fragment.xml" value="0.25" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/layout/item_city.xml" value="0.34791666666666665" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/layout/item_city_inf.xml" value="0.3049040511727079" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/layout/item_daily_weather.xml" value="0.34791666666666665" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/layout/sidebar_header.xml" value="0.34791666666666665" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/layout/wind_describe_fragment.xml" value="0.34791666666666665" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/menu-v26/user_settings_sidebar.xml" value="0.34791666666666665" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/menu/manager_device_menu.xml" value="0.34791666666666665" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/menu/nav_menu.xml" value="0.34791666666666665" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/menu/search_device_menu.xml" value="0.34791666666666665" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/menu/tab_menu.xml" value="0.34791666666666665" />
+        <entry key="..\:/WorkSpace/GitSpaceAndroid/weather/app/src/main/res/menu/user_settings_sidebar.xml" value="0.34791666666666665" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
