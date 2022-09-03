@@ -15,9 +15,13 @@
 local.properties
 gradle.properties
 
+# Outputs
+/build
+/debug
+/release
+
 .DS_Store
 
-/build
 /captures
 .externalNativeBuild
 .cxx

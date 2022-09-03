@@ -39,7 +39,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.gcode.gweather.R
-import com.gcode.gweather.databinding.HomeActivityBinding
+import com.gcode.gweather.databinding.ActivityHomeBinding
 import com.gcode.gweather.fragment.CityFragment
 import com.gcode.gweather.fragment.DataFragment
 import com.gcode.gweather.fragment.HomeFragment
@@ -50,11 +50,13 @@ import com.gcode.vasttools.adapter.VastFragmentAdapter
 import com.gcode.vasttools.utils.LogUtils
 import com.gcode.vasttools.utils.ToastUtils
 import com.permissionx.guolindev.PermissionX
+import com.qweather.sdk.bean.base.Range
+import com.qweather.sdk.bean.geo.GeoBean
+import com.qweather.sdk.view.QWeather
 import kotlinx.coroutines.launch
 import nl.joery.animatedbottombar.AnimatedBottomBar
 
-
-class HomeActivity:VastVbVmActivity<HomeActivityBinding,HomeActivityViewModel>() {
+class HomeActivity : VastVbVmActivity<ActivityHomeBinding, HomeActivityViewModel>() {
 
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
@@ -91,8 +93,22 @@ class HomeActivity:VastVbVmActivity<HomeActivityBinding,HomeActivityViewModel>()
             mBinding.bottomNavView.selectTabAt(it)
         }
 
+        mViewModel.location.observe(this) {
+            QWeather.getGeoCityLookup(this, it, Range.CN, 1, null, object : QWeather.OnResultGeoListener {
+                    override fun onError(throwable: Throwable?) {
+                        throwable?.printStackTrace()
+                    }
+
+                    override fun onSuccess(geoBean: GeoBean?) {
+                        if (geoBean != null) {
+                            mViewModel.updateLocationID(geoBean.locationBean[0].id)
+                        }
+                    }
+                })
+        }
+
         mBinding.viewPager.apply {
-            this.adapter = VastFragmentAdapter(this@HomeActivity ,ArrayList<Fragment>().apply {
+            this.adapter = VastFragmentAdapter(this@HomeActivity, ArrayList<Fragment>().apply {
                 add(HomeFragment())
                 add(DataFragment())
                 add(CityFragment())
@@ -153,9 +169,9 @@ class HomeActivity:VastVbVmActivity<HomeActivityBinding,HomeActivityViewModel>()
             var location: String
             lifecycleScope.launch {
                 location = AmapUtils.getLocation()
-                LogUtils.d(defaultTag,location)
                 mViewModel.searchPlaces(location)
                 mViewModel.setGpsStatus(true)
+                mViewModel.updateLocationID(location)
             }
         } else {
             mViewModel.setGpsStatus(false)

@@ -54,8 +54,8 @@
     <string name="daily_low_temperature">最低温度%s℃</string>
     <string name="daily_humidity">%s％</string>
     <string name="daily_wind_speed">%skm/h</string>
-    <string name="weather_forecast_for_the_last_five_days_hans">最近五天的天气预报</string>
-    <string name="weather_forecast_for_the_last_five_days_en">Weather forecast for the last five days</string>
+    <string name="weather_forecast_for_the_last_ten_days_hans">最近十天的天气预报</string>
+    <string name="weather_forecast_for_the_last_ten_days_en">Weather forecast for the last ten days</string>
     <string name="city">城市</string>
     <string name="now_weather">当前天气实况</string>
     <!--城市item图标-->

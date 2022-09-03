@@ -33,7 +33,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.gcode.gweather.BR
 import com.gcode.gweather.R
-import com.gcode.gweather.databinding.HomeFragmentBinding
+import com.gcode.gweather.databinding.FragmentHomeBinding
 import com.gcode.gweather.model.SimpleDailyWeather
 import com.gcode.gweather.viewModel.HomeActivityViewModel
 import com.gcode.vastadapter.base.VastBindAdapter
@@ -43,7 +43,7 @@ import com.gcode.vasttools.utils.ToastUtils
 import com.qweather.sdk.bean.weather.WeatherDailyBean
 import com.qweather.sdk.view.QWeather
 
-class HomeFragment : VastVbVmFragment<HomeFragmentBinding,HomeActivityViewModel>() {
+class HomeFragment : VastVbVmFragment<FragmentHomeBinding,HomeActivityViewModel>() {
 
     private class DataBindingAdapter(
         items: MutableList<VastBindAdapterItem>,

@@ -31,20 +31,22 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.lifecycleScope
 import com.gcode.gweather.R
-import com.gcode.gweather.databinding.DataFragmentBinding
+import com.gcode.gweather.databinding.FragmentDataBinding
 import com.gcode.gweather.utils.AmapUtils
 import com.gcode.gweather.viewModel.HomeActivityViewModel
 import com.gcode.vasttools.fragment.VastVbVmFragment
 import com.gcode.vasttools.utils.ResUtils
 import com.gcode.vasttools.utils.ScreenSizeUtils.getMobileScreenHeight
 import com.gcode.vasttools.utils.ScreenSizeUtils.getMobileScreenWidth
-import com.qweather.sdk.bean.air.AirDailyBean
+import com.qweather.sdk.bean.history.HistoricalAirBean
 import com.qweather.sdk.bean.weather.WeatherNowBean
 import com.qweather.sdk.view.QWeather
 import com.scwang.smart.refresh.header.BezierRadarHeader
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 
-class DataFragment : VastVbVmFragment<DataFragmentBinding, HomeActivityViewModel>() {
+class DataFragment : VastVbVmFragment<FragmentDataBinding, HomeActivityViewModel>() {
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun initView(view: View, savedInstanceState: Bundle?) {
@@ -53,40 +55,56 @@ class DataFragment : VastVbVmFragment<DataFragmentBinding, HomeActivityViewModel
         initClickListener()
         // 更新数据
         mViewModel.apply {
-            location.observe(requireActivity()){location->
-                QWeather.getWeatherNow(requireActivity(),location,object :QWeather.OnResultWeatherNowListener{
-                    override fun onError(p0: Throwable?) {
-                        p0?.printStackTrace()
-                    }
+            location.observe(requireActivity()) { location ->
+                QWeather.getWeatherNow(
+                    requireActivity(),
+                    location,
+                    object : QWeather.OnResultWeatherNowListener {
+                        override fun onError(p0: Throwable?) {
+                            p0?.printStackTrace()
+                        }
 
-                    override fun onSuccess(weatherNowBean: WeatherNowBean?) {
-                        val nowWeather = weatherNowBean?.now
-                        if (nowWeather != null) {
-                            mViewModel.updateWeatherData(
-                                nowWeather.temp.toFloat(),
-                                nowWeather.feelsLike.toInt(),
-                                nowWeather.humidity.toFloat(),
-                                nowWeather.windDir,
-                                nowWeather.windSpeed.toFloat(),
-                                nowWeather.text,
-                                nowWeather.vis.toFloat()
-                            )
+                        override fun onSuccess(weatherNowBean: WeatherNowBean?) {
+                            val nowWeather = weatherNowBean?.now
+                            if (nowWeather != null) {
+                                mViewModel.updateWeatherData(
+                                    nowWeather.temp.toFloat(),
+                                    nowWeather.feelsLike.toInt(),
+                                    nowWeather.humidity.toFloat(),
+                                    nowWeather.windDir,
+                                    nowWeather.windSpeed.toFloat(),
+                                    nowWeather.text,
+                                    nowWeather.vis.toFloat()
+                                )
+                            }
+                        }
+                    })
+            }
+
+            locationID.observe(requireActivity()) {
+                val sdf = SimpleDateFormat("yyyyMMdd")
+                var date = Date()
+                val calendar: Calendar = Calendar.getInstance()
+                calendar.time = date
+                calendar.add(Calendar.DAY_OF_MONTH, -1)
+                date = calendar.time
+                QWeather.getHistoricalAir(
+                    requireActivity(),
+                    it,
+                    sdf.format(date),
+                    object : QWeather.OnResultAirHistoricalBeanListener {
+                        override fun onError(p0: Throwable?) {
+                            p0?.printStackTrace()
+                        }
+
+                        override fun onSuccess(historicalAirBean: HistoricalAirBean?) {
+                            val dailyBeans = historicalAirBean?.airHourlyBeans
+                            if (null != dailyBeans) {
+                                mViewModel.updateAirQualityData(dailyBeans)
+                            }
                         }
                     }
-                })
-
-                QWeather.getAir5D(requireActivity(),location,null,object:QWeather.OnResultAirDailyListener{
-                    override fun onError(p0: Throwable?) {
-                        p0?.printStackTrace()
-                    }
-
-                    override fun onSuccess(airDailyBean: AirDailyBean?) {
-                        val dailyBeans = airDailyBean?.airDaily
-                        if(null != dailyBeans){
-                            mViewModel.updateAirQualityData(dailyBeans)
-                        }
-                    }
-                })
+                )
             }
 
             temperature.observe(viewLifecycleOwner) { temperatureValue ->
@@ -124,9 +142,7 @@ class DataFragment : VastVbVmFragment<DataFragmentBinding, HomeActivityViewModel
                 )
             }
 
-            /**
-             * 更新天气文字描述
-             */
+            // 更新天气文字描述
             weather.observe(viewLifecycleOwner) { weather ->
                 when (weather) {
                     "晴" -> {
@@ -176,9 +192,9 @@ class DataFragment : VastVbVmFragment<DataFragmentBinding, HomeActivityViewModel
                 }
             }
 
-            chartModelUpdateSeriesArray.observe(viewLifecycleOwner) { seriesArray ->
+            chartModelUpdateSeriesArray.observe(requireActivity()) { seriesArray ->
                 mBinding.airQualityChartView.aa_onlyRefreshTheChartDataWithChartOptionsSeriesArray(
-                    seriesArray
+                    seriesArray, true
                 )
             }
         }

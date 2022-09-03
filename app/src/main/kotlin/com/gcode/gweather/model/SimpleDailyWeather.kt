@@ -66,7 +66,7 @@ class SimpleDailyWeather(
     }
 
     override fun getVBAdpItemType(): Int {
-        return R.layout.daily_weather_recycle_item
+        return R.layout.item_daily_weather_recycle
     }
 
 

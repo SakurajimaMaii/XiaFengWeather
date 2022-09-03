@@ -32,7 +32,7 @@ import com.qweather.sdk.view.HeConfig
 class App : Application() {
 
     companion object{
-        const val TOKEN = ""
+        const val TOKEN = "95f1a215ad5d4eaa828a99f6ebda710c"
     }
 
     override fun onCreate() {
@@ -43,7 +43,7 @@ class App : Application() {
         MapsInitializer.updatePrivacyShow(this, true, true)
         // 和风天气更新
         HeConfig.init("", "")
-        HeConfig.switchToDevService();
+        HeConfig.switchToBizService()
     }
 
 }

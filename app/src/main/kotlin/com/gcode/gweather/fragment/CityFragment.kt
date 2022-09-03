@@ -32,7 +32,7 @@ import android.widget.SearchView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gcode.gweather.BR
-import com.gcode.gweather.databinding.CityFragmentBinding
+import com.gcode.gweather.databinding.FragmentCityBinding
 import com.gcode.gweather.model.PlaceInf
 import com.gcode.gweather.viewModel.HomeActivityViewModel
 import com.gcode.vastadapter.base.VastBindAdapter
@@ -43,7 +43,7 @@ import com.gcode.vasttools.utils.StrUtils
 import com.qweather.sdk.bean.geo.GeoBean
 import com.qweather.sdk.view.QWeather
 
-class CityFragment : VastVbVmFragment<CityFragmentBinding,HomeActivityViewModel>() {
+class CityFragment : VastVbVmFragment<FragmentCityBinding,HomeActivityViewModel>() {
 
     private class DataBindingAdapter(
         dataSource: MutableList<VastBindAdapterItem>,
@@ -97,22 +97,26 @@ class CityFragment : VastVbVmFragment<CityFragmentBinding,HomeActivityViewModel>
                 override fun onSuccess(geoBean: GeoBean?) {
                     if(null != geoBean){
                         val cities = geoBean.locationBean
-                        cityList.clear()
-                        if (cities != null) {
-                            for (item in cities) {
-                                cityList.add(PlaceInf(
-                                    item.id,
-                                    item.name,
-                                    item.country,
-                                    StrUtils.strConcat(item.adm1,"/",item.adm2),
-                                    item.utcOffset
-                                ))
-                            }
-                        }
-                        adapter.notifyDataSetChanged()
+                        mViewModel.updateDailyCities(cities)
                     }
                 }
             })
+        }
+
+        mViewModel.cities.observe(requireActivity()){ cities->
+            cityList.clear()
+            if (cities != null) {
+                for (item in cities) {
+                    cityList.add(PlaceInf(
+                        item.id,
+                        item.name,
+                        item.country,
+                        StrUtils.strConcat(item.adm1,"/",item.adm2),
+                        item.utcOffset
+                    ))
+                }
+            }
+            adapter.notifyDataSetChanged()
         }
     }
 }

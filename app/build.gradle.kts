@@ -44,6 +44,13 @@ android {
         versionName = Version.version_name
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            // 选择要添加的对应cpu类型的.so库,只支持七种 mips,
+            // mips64, X86, X86_64, arm64-v8a, armeabi, armeabi-v7a
+            // 参考: https://mp.weixin.qq.com/s/jnZpgaRFQT5ULk9tHWMAGg
+            abiFilters.add("arm64-v8a")
+        }
     }
 
     signingConfigs {
