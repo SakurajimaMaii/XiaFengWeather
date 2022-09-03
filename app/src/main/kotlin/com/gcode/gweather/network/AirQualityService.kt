@@ -25,7 +25,7 @@
 package com.gcode.gweather.network
 
 import com.gcode.gweather.model.AQResponse
-import com.gcode.gweather.utils.AppUtils
+import com.gcode.gweather.App
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -36,7 +36,7 @@ interface AirQualityService {
      * @param location String
      * @return Call<AQResponse>
      */
-    @GET("v3/air/daily.json?key=${AppUtils.TOKEN}&language=zh-Hans")
+    @GET("v3/air/daily.json?key=${App.TOKEN}$&language=zh-Hans")
     fun searchAirQuality(
         @Query("location") location: String,
         @Query("days") days: Int

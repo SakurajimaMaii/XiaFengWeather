@@ -46,6 +46,21 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        getByName("debug") {
+            storeFile = File("D:\\AndroidKey\\XiaFengWeather.jks")
+            storePassword = project.property("myStorePassword") as String?
+            keyPassword = project.property("myKeyPassword") as String?
+            keyAlias = project.property("myKeyAlias") as String?
+        }
+        create("release") {
+            storeFile = File("D:\\AndroidKey\\XiaFengWeather.jks")
+            storePassword = project.property("myStorePassword") as String?
+            keyPassword = project.property("myKeyPassword") as String?
+            keyAlias = project.property("myKeyAlias") as String?
+        }
+    }
+
     buildTypes {
         release {
             isDebuggable = false
@@ -85,6 +100,7 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs","include" to listOf("*.jar"))))
 
     implementation(files("libs/VastTools_0.0.9_Cancey.jar"))
+    implementation(files("libs/QWeather_Public_Android_V4.10.jar"))
 
     implementation(AndroidX.activity_ktx)
     implementation(AndroidX.core_ktx)

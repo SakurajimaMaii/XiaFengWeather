@@ -26,29 +26,80 @@ package com.gcode.gweather.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import com.gcode.gweather.model.AQDailyAirQuality
 import com.gcode.gweather.model.PlaceInf
-import com.gcode.gweather.network.Repository
 import com.gcode.vasttools.lifecycle.VastViewModel
-import com.gcode.vasttools.utils.LogUtils
 import com.github.aachartmodel.aainfographics.aachartcreator.*
 import com.github.aachartmodel.aainfographics.aaoptionsmodel.*
 import com.github.aachartmodel.aainfographics.aatools.AAGradientColor
 import com.github.aachartmodel.aainfographics.aatools.AALinearGradientDirection
+import com.qweather.sdk.bean.air.AirDailyBean
+import com.qweather.sdk.bean.weather.WeatherDailyBean
 
 class HomeActivityViewModel : VastViewModel() {
 
-    companion object {
-        //请求天数
-        private const val DAYS: Int = 5
-    }
-
     //chartModel 刷新数据
     private val _chartModelUpdateSeriesArray = MutableLiveData<Array<AASeriesElement>>()
-
     val chartModelUpdateSeriesArray: LiveData<Array<AASeriesElement>>
         get() = _chartModelUpdateSeriesArray
+
+    /**
+     * location是请求天气等数据的核心
+     */
+    private val _location = MutableLiveData<String>()
+    val location:LiveData<String>
+        get() = _location
+    private val _temperature = MutableLiveData<Float>()
+    private val _feelslike = MutableLiveData<Int>()
+    private val _humidity = MutableLiveData<Float>()
+    private val _windDirection = MutableLiveData<String>()
+    private val _windSpeed = MutableLiveData<Float>()
+    private val _weather = MutableLiveData<String>()
+    private val _visibility = MutableLiveData<Float>()
+    private val _aqDailyDataList = MutableLiveData<List<AQDailyAirQuality>>() //天气数据
+
+    /**
+     * 只暴露不可变LiveData给外部
+     */
+    val temperature: LiveData<Float>
+        get() = _temperature
+    val feelslike: LiveData<Int>
+        get() = _feelslike
+    val humidity: LiveData<Float>
+        get() = _humidity
+    val windSpeed: LiveData<Float>
+        get() = _windSpeed
+    val weather: LiveData<String>
+        get() = _weather
+    val visibility: LiveData<Float>
+        get() = _visibility
+
+    //AnimatedBottomBar当前选中页面
+    val currentPage = MutableLiveData<Int>()
+
+    private val _cityCode = MutableLiveData<String>()
+    val cityCode:LiveData<String>
+        get() = _cityCode
+
+    private val _isGpsOpen = MutableLiveData<Boolean>()
+    val isGpsOpen: LiveData<Boolean>
+        get() = _isGpsOpen
+
+    private val _placeInf = MutableLiveData<PlaceInf>()
+    val placeInf: LiveData<PlaceInf>
+        get() = _placeInf
+
+    private val _spin = MutableLiveData<Boolean>()
+    val spin: LiveData<Boolean>
+        get() = _spin
+
+    private val _dailyWeathers = MutableLiveData<MutableList<WeatherDailyBean.DailyBean>>()
+    val dailyWeathers:LiveData<MutableList<WeatherDailyBean.DailyBean>>
+        get() = _dailyWeathers
+
+    fun updateDailyWeathers(dailyWeathers:MutableList<WeatherDailyBean.DailyBean>) {
+        _dailyWeathers.postValue(dailyWeathers)
+    }
 
     fun aqiChart(): AAOptions {
         val stopsArr: Array<Any> = arrayOf(
@@ -203,16 +254,8 @@ class HomeActivityViewModel : VastViewModel() {
      * 刷新天气数据
      * @param daily MutableList<AQDailyAirQuality>
      */
-    fun updateAirQualityData(daily: List<AQDailyAirQuality>) {
+    fun updateAirQualityData(daily: List<AirDailyBean.DailyBean>) {
 
-        val stopsArr: Array<Any> = arrayOf(
-            arrayOf(0.2, "rgba(156,107,211,0.3)")
-        )
-
-        val gradientColorDic1: Map<String, *> = AAGradientColor.linearGradient(
-            AALinearGradientDirection.ToBottom,
-            stopsArr
-        )
         val gradientColorDic2: Map<String, *> = AAGradientColor.linearGradient(
             AALinearGradientDirection.ToBottom,
             "#956FD4",
@@ -229,26 +272,11 @@ class HomeActivityViewModel : VastViewModel() {
                     .yAxis(0)
                     .data(
                         arrayOf(
-                            daily[0].pm25.toFloat(),
-                            daily[1].pm25.toFloat(),
-                            daily[2].pm25.toFloat(),
-                            daily[3].pm25.toFloat(),
-                            daily[4].pm25.toFloat()
-                        )
-                    ),
-                AASeriesElement()
-                    .name("PM10预报值")
-                    .type(AAChartType.Column)
-                    .borderWidth(0f)
-                    .color(gradientColorDic1)
-                    .yAxis(0)
-                    .data(
-                        arrayOf(
-                            daily[0].pm10.toFloat(),
-                            daily[1].pm10.toFloat(),
-                            daily[2].pm10.toFloat(),
-                            daily[3].pm10.toFloat(),
-                            daily[4].pm10.toFloat()
+                            daily[0].level.toFloat(),
+                            daily[1].level.toFloat(),
+                            daily[2].level.toFloat(),
+                            daily[3].level.toFloat(),
+                            daily[4].level.toFloat()
                         )
                     ),
                 AASeriesElement()
@@ -275,55 +303,6 @@ class HomeActivityViewModel : VastViewModel() {
                     )
             )
         )
-    }
-
-    /**
-     * location是请求天气等数据的核心
-     */
-    private val _location = MutableLiveData<String>()
-
-    private val _temperature = MutableLiveData<Float>()
-    private val _feelslike = MutableLiveData<Int>()
-    private val _humidity = MutableLiveData<Float>()
-    private val _windDirection = MutableLiveData<String>()
-    private val _windSpeed = MutableLiveData<Float>()
-    private val _weather = MutableLiveData<String>()
-    private val _visibility = MutableLiveData<Float>()
-    private val _aqDailyDataList = MutableLiveData<List<AQDailyAirQuality>>() //天气数据
-
-    /**
-     * 只暴露不可变LiveData给外部
-     */
-    val temperature: LiveData<Float>
-        get() = _temperature
-
-    val feelslike: LiveData<Int>
-        get() = _feelslike
-
-    val humidity: LiveData<Float>
-        get() = _humidity
-
-    val windSpeed: LiveData<Float>
-        get() = _windSpeed
-
-    val weather: LiveData<String>
-        get() = _weather
-
-    val visibility: LiveData<Float>
-        get() = _visibility
-
-    /**
-     * 初始化
-     */
-    init {
-        _temperature.value = 0f
-        _feelslike.value = 0
-        _humidity.value = 0f
-        _windDirection.value = ""
-        _windSpeed.value = 0f
-        _weather.value = ""
-        _visibility.value = 0f
-        _aqDailyDataList.value = ArrayList()
     }
 
     /**
@@ -356,34 +335,12 @@ class HomeActivityViewModel : VastViewModel() {
         _visibility.postValue(visibility)
     }
 
-    val placeLiveData = Transformations.switchMap(_location) { location ->
-        Repository.searchPlaceWeather(location)
-    }
-
-    val dailyAirQualityResult = Transformations.switchMap(_location) { location ->
-        Repository.searchAirQuality(location, DAYS)
-    }
-
-    val dailyWeatherResult = Transformations.switchMap(_location) { location ->
-        Repository.searchDailyWeather(location)
-    }
-
     fun searchPlaces(location: String) {
         _location.value = location
-        LogUtils.i(defaultTag, "当前查询的location是$location")
     }
-
-    //AnimatedBottomBar当前选中页面
-    val currentPage = MutableLiveData<Int>()
 
     fun setCurrentPage(index: Int) {
         currentPage.postValue(index)
-    }
-
-    private val cityCode = MutableLiveData<String>()
-
-    val cityListJson = Transformations.switchMap(cityCode) { city ->
-        Repository.searchPlace(city)
     }
 
     /**
@@ -393,13 +350,8 @@ class HomeActivityViewModel : VastViewModel() {
     fun searchCity(
         cityCode: String,
     ) {
-        this.cityCode.postValue(cityCode)
+        this._cityCode.postValue(cityCode)
     }
-
-    private val _isGpsOpen = MutableLiveData<Boolean>()
-
-    val isGpsOpen: LiveData<Boolean>
-        get() = _isGpsOpen
 
     /**
      * 设置Gps状态
@@ -411,11 +363,6 @@ class HomeActivityViewModel : VastViewModel() {
         _isGpsOpen.postValue(gpsStatus)
     }
 
-    private val _placeInf = MutableLiveData<PlaceInf>()
-
-    val placeInf: LiveData<PlaceInf>
-        get() = _placeInf
-
     /**
      * 更新PlaceInf
      * @param placeInf PlaceInf
@@ -425,17 +372,26 @@ class HomeActivityViewModel : VastViewModel() {
         _location.postValue(placeInf.id)
     }
 
-    private val _spin = MutableLiveData<Boolean>()
-
-    val spin: LiveData<Boolean>
-        get() = _spin
-
     /**
      * 是否旋转主界面列表
      * @param spinList Boolean
      */
     fun spinList(spinList: Boolean) {
         _spin.postValue(spinList)
+    }
+
+    /**
+     * 初始化
+     */
+    init {
+        _temperature.value = 0f
+        _feelslike.value = 0
+        _humidity.value = 0f
+        _windDirection.value = ""
+        _windSpeed.value = 0f
+        _weather.value = ""
+        _visibility.value = 0f
+        _aqDailyDataList.value = ArrayList()
     }
 
     init {

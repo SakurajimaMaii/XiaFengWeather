@@ -39,6 +39,9 @@ import com.gcode.vastadapter.base.VastBindAdapter
 import com.gcode.vastadapter.interfaces.VastBindAdapterItem
 import com.gcode.vasttools.extension.cast
 import com.gcode.vasttools.fragment.VastVbVmFragment
+import com.gcode.vasttools.utils.StrUtils
+import com.qweather.sdk.bean.geo.GeoBean
+import com.qweather.sdk.view.QWeather
 
 class CityFragment : VastVbVmFragment<CityFragmentBinding,HomeActivityViewModel>() {
 
@@ -54,10 +57,11 @@ class CityFragment : VastVbVmFragment<CityFragmentBinding,HomeActivityViewModel>
     }
 
     private val cityList: MutableList<VastBindAdapterItem> = ArrayList()
-    private val adapter = DataBindingAdapter(cityList,requireActivity())
+    private lateinit var adapter:DataBindingAdapter
     private lateinit var layoutManager: LinearLayoutManager
 
     override fun initView(view:View,savedInstanceState: Bundle?) {
+        adapter = DataBindingAdapter(cityList,requireActivity())
         layoutManager = LinearLayoutManager(mBinding.root.context)
         //设置设备搜索
         mBinding.searchView.isSubmitButtonEnabled = true
@@ -80,18 +84,35 @@ class CityFragment : VastVbVmFragment<CityFragmentBinding,HomeActivityViewModel>
                 mViewModel.setCurrentPage(0)
             }
         })
+
         mBinding.cityList.adapter = adapter
         mBinding.cityList.layoutManager = layoutManager
 
-        mViewModel.cityListJson.observe(requireActivity()) { result ->
-            val cities = result.getOrNull()
-            cityList.clear()
-            if (cities != null) {
-                for (item in cities) {
-                    cityList.add(item)
+        mViewModel.cityCode.observe(requireActivity()){ code->
+            QWeather.getGeoCityLookup(requireActivity(),code,object :QWeather.OnResultGeoListener{
+                override fun onError(p0: Throwable?) {
+                    p0?.printStackTrace()
                 }
-            }
-            adapter.notifyDataSetChanged()
+
+                override fun onSuccess(geoBean: GeoBean?) {
+                    if(null != geoBean){
+                        val cities = geoBean.locationBean
+                        cityList.clear()
+                        if (cities != null) {
+                            for (item in cities) {
+                                cityList.add(PlaceInf(
+                                    item.id,
+                                    item.name,
+                                    item.country,
+                                    StrUtils.strConcat(item.adm1,"/",item.adm2),
+                                    item.utcOffset
+                                ))
+                            }
+                        }
+                        adapter.notifyDataSetChanged()
+                    }
+                }
+            })
         }
     }
 }

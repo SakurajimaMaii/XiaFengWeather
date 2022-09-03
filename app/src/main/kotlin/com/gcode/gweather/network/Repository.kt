@@ -59,21 +59,6 @@ object Repository {
         emit(result)
     }
 
-    fun searchPlace(location: String) = liveData(Dispatchers.IO) {
-        val result = try {
-            val dataResponse = Network.searchPlace(location)
-            if (dataResponse.results.isNotEmpty()) {
-                val place = dataResponse.results
-                Result.success(place)
-            } else {
-                Result.failure(RuntimeException("response data array is empty is ${dataResponse.results.isEmpty()}"))
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-        emit(result)
-    }
-
     /**
      * 搜索天气数据
      * @param location String 坐标

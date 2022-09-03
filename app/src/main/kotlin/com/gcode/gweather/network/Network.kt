@@ -35,9 +35,6 @@ object Network {
     //天气信息动态代理对象
     private val placeWeatherService = ServiceCreator.weatherCreate(PlaceWeatherService::class.java)
 
-    //天气信息动态代理对象
-    private val placeService = ServiceCreator.weatherCreate(PlaceService::class.java)
-
     //空气质量信息动态代理对象
     private val AQService = ServiceCreator.weatherCreate(AirQualityService::class.java)
 
@@ -48,10 +45,6 @@ object Network {
     suspend fun searchDailyWeather(
         location: String
     ) = placeWeatherService.searchDailyWeather(location).await()
-
-    suspend fun searchPlace(
-        location: String
-    ) = placeService.searchPlace(location).await()
 
     /**
      * 搜索天气质量

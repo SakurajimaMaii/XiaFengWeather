@@ -30,13 +30,6 @@ import com.gcode.vastadapter.interfaces.VAdpLongClickEventListener
 import com.gcode.vastadapter.interfaces.VastBindAdapterItem
 
 /**
- * 返回城市数据列表数据
- * @property results List<Place>
- * @constructor
- */
-data class PlaceResponse(val results: List<PlaceInf>)
-
-/**
  * 城市数据类
  * @property id String 城市ID
  * @property name String 城市名称
@@ -51,10 +44,9 @@ class PlaceInf(
     val name: String,
     val country: String,
     val path: String,
-    val timezone: String,
     val timezone_offset: String,
-    override var vbAapClickEventListener: VAapClickEventListener?,
-    override var vbAdpLongClickEventListener: VAdpLongClickEventListener?
+    override var vbAapClickEventListener: VAapClickEventListener? = null,
+    override var vbAdpLongClickEventListener: VAdpLongClickEventListener? = null
 ) : VastBindAdapterItem {
 
     override fun getVBAdpItemType(): Int {

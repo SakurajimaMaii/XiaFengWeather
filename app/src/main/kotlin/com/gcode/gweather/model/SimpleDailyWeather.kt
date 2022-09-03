@@ -30,10 +30,12 @@ import com.gcode.vastadapter.interfaces.VAdpLongClickEventListener
 import com.gcode.vastadapter.interfaces.VastBindAdapterItem
 import com.gcode.vasttools.utils.ResUtils
 
-/**
- *作者:created by HP on 2021/3/11 20:15
- *邮箱:sakurajimamai2020@qq.com
- */
+// Author: Vast Gui
+// Email: guihy2019@gmail.com
+// Date: 2021/3/11 20:15
+// Description:
+// Documentation:
+
 class SimpleDailyWeather(
     val date: String,
     text_day: String,

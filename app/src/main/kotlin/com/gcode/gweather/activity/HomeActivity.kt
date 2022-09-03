@@ -64,7 +64,6 @@ class HomeActivity:VastVbVmActivity<HomeActivityBinding,HomeActivityViewModel>()
         }
 
     override fun initView(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
 
         PermissionX.init(this)
             .permissions(
@@ -154,6 +153,7 @@ class HomeActivity:VastVbVmActivity<HomeActivityBinding,HomeActivityViewModel>()
             var location: String
             lifecycleScope.launch {
                 location = AmapUtils.getLocation()
+                LogUtils.d(defaultTag,location)
                 mViewModel.searchPlaces(location)
                 mViewModel.setGpsStatus(true)
             }

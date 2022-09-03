@@ -83,11 +83,7 @@ object AmapUtils {
         suspendCoroutine<Unit> {
             continuation = it
         }
-        LogUtils.i(
-            "AmapUtils",
-            String.format("%.2f", latitude) + ":" + String.format("%.2f", longitude)
-        )
-        return String.format("%.2f", latitude) + ":" + String.format("%.2f", longitude)
+        return String.format("%.2f", longitude) + "," + String.format("%.2f", latitude)
     }
 
     /**

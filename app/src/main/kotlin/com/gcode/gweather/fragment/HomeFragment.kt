@@ -27,12 +27,7 @@ package com.gcode.gweather.fragment
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -45,6 +40,8 @@ import com.gcode.vastadapter.base.VastBindAdapter
 import com.gcode.vastadapter.interfaces.VastBindAdapterItem
 import com.gcode.vasttools.fragment.VastVbVmFragment
 import com.gcode.vasttools.utils.ToastUtils
+import com.qweather.sdk.bean.weather.WeatherDailyBean
+import com.qweather.sdk.view.QWeather
 
 class HomeFragment : VastVbVmFragment<HomeFragmentBinding,HomeActivityViewModel>() {
 
@@ -118,25 +115,36 @@ class HomeFragment : VastVbVmFragment<HomeFragmentBinding,HomeActivityViewModel>
                 mBinding.cityName.text = it.name
             }
 
-            dailyWeatherResult.observe(viewLifecycleOwner) { res ->
-                val list = res.getOrNull()
-                if (list != null) {
-                    val daily = list[0].daily
-                    dailyWeatherList.clear()
-                    for (item in daily) {
+            location.observe(viewLifecycleOwner) { location ->
+                QWeather.getWeather10D(requireActivity() ,location,object :QWeather.OnResultWeatherDailyListener{
+                    override fun onError(throwable: Throwable?) {
+                        throwable?.printStackTrace()
+                    }
+
+                    override fun onSuccess(weatherDailyBean: WeatherDailyBean?) {
+                        val daily = weatherDailyBean?.daily
+                        if(null != daily){
+                            mViewModel.updateDailyWeathers(daily)
+                        }
+                    }
+                })
+            }
+
+            dailyWeathers.observe(requireActivity()){dailyWeathers->
+                dailyWeatherList.clear()
+                    for (item in dailyWeathers) {
                         dailyWeatherList.add(
                             SimpleDailyWeather(
-                                item.date,
-                                item.text_day,
-                                item.high,
-                                item.low,
-                                item.windSpeed,
+                                item.fxDate,
+                                item.textDay,
+                                item.tempMax,
+                                item.tempMin,
+                                item.windSpeedDay,
                                 item.humidity
                             )
                         )
                     }
-                }
-                adapter.notifyDataSetChanged()
+                    adapter.notifyDataSetChanged()
             }
 
             isGpsOpen.observe(viewLifecycleOwner) {

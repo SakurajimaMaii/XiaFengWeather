@@ -22,20 +22,28 @@
  * SOFTWARE.
  */
 
-package com.gcode.gweather.network
+package com.gcode.gweather
 
-import com.gcode.gweather.model.PlaceResponse
-import com.gcode.gweather.utils.AppUtils
-import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Query
+import android.app.Application
+import com.amap.api.maps.MapsInitializer
+import com.gcode.vasttools.ToolsConfig
+import com.qweather.sdk.view.HeConfig
 
-interface PlaceService {
-    /**
-     * 调用searchPlace方法时Retrofit会自动发送GET请求
-     * @param location String
-     * @return Call<DataResponse>
-     */
-    @GET("v3/location/search.json?key=${AppUtils.TOKEN}&language=zh-Hans&unit=c")
-    fun searchPlace(@Query("q") location: String): Call<PlaceResponse>
+class App : Application() {
+
+    companion object{
+        const val TOKEN = ""
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        ToolsConfig.init(this)
+        // 高德地图隐私更新
+        MapsInitializer.updatePrivacyAgree(this, true)
+        MapsInitializer.updatePrivacyShow(this, true, true)
+        // 和风天气更新
+        HeConfig.init("", "")
+        HeConfig.switchToDevService();
+    }
+
 }

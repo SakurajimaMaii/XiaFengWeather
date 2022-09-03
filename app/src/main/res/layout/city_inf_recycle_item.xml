@@ -138,24 +138,6 @@
                         android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/ic_city_item_city_area"
-                        android:typeface="@{@string/iconCity}"/>
-                    <TextView
-                        android:textColor="@color/white"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{item.timezone}"
-                        android:layout_gravity="center_vertical"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:textSize="20sp"
-                        android:layout_margin="5dp"
-                        android:textColor="@color/white"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:text="@string/ic_city_item_city_utc"
                         android:typeface="@{@string/iconCity}"/>
                     <TextView

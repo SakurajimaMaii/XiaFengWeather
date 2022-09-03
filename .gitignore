@@ -13,6 +13,7 @@
 
 # properties
 local.properties
+gradle.properties
 
 .DS_Store
 

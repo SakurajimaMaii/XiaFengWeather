@@ -27,7 +27,6 @@ package com.gcode.gweather.fragment
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.lifecycleScope
@@ -39,10 +38,11 @@ import com.gcode.vasttools.fragment.VastVbVmFragment
 import com.gcode.vasttools.utils.ResUtils
 import com.gcode.vasttools.utils.ScreenSizeUtils.getMobileScreenHeight
 import com.gcode.vasttools.utils.ScreenSizeUtils.getMobileScreenWidth
-import com.gcode.vasttools.utils.ToastUtils
+import com.qweather.sdk.bean.air.AirDailyBean
+import com.qweather.sdk.bean.weather.WeatherNowBean
+import com.qweather.sdk.view.QWeather
 import com.scwang.smart.refresh.header.BezierRadarHeader
 import kotlinx.coroutines.launch
-
 
 class DataFragment : VastVbVmFragment<DataFragmentBinding, HomeActivityViewModel>() {
 
@@ -53,34 +53,40 @@ class DataFragment : VastVbVmFragment<DataFragmentBinding, HomeActivityViewModel
         initClickListener()
         // 更新数据
         mViewModel.apply {
-            placeLiveData.observe(viewLifecycleOwner) { result ->
-                //places 请求到的数据
-                val places = result.getOrNull()
-                if (places != null) {
-                    //更新ViewModel内数据
-                    places[0].now.apply {
-                        mViewModel.updateWeatherData(
-                            temperature.toFloat(),
-                            feelLike.toInt(),
-                            humidity.toFloat(),
-                            windDirection,
-                            windSpeed.toFloat(),
-                            text,
-                            visibility.toFloat()
-                        )
+            location.observe(requireActivity()){location->
+                QWeather.getWeatherNow(requireActivity(),location,object :QWeather.OnResultWeatherNowListener{
+                    override fun onError(p0: Throwable?) {
+                        p0?.printStackTrace()
                     }
-                    Log.d("updateWeather success", "数据更新完成")
-                } else {
-                    ToastUtils.showShortMsg(requireContext(), "查询数据错误")
-                    result.exceptionOrNull()?.printStackTrace()
-                }
-            }
 
-            dailyAirQualityResult.observe(viewLifecycleOwner) { AQResponse ->
-                val result = AQResponse.getOrNull()
-                if (null != result) {
-                    mViewModel.updateAirQualityData(result.results[0].daily)
-                }
+                    override fun onSuccess(weatherNowBean: WeatherNowBean?) {
+                        val nowWeather = weatherNowBean?.now
+                        if (nowWeather != null) {
+                            mViewModel.updateWeatherData(
+                                nowWeather.temp.toFloat(),
+                                nowWeather.feelsLike.toInt(),
+                                nowWeather.humidity.toFloat(),
+                                nowWeather.windDir,
+                                nowWeather.windSpeed.toFloat(),
+                                nowWeather.text,
+                                nowWeather.vis.toFloat()
+                            )
+                        }
+                    }
+                })
+
+                QWeather.getAir5D(requireActivity(),location,null,object:QWeather.OnResultAirDailyListener{
+                    override fun onError(p0: Throwable?) {
+                        p0?.printStackTrace()
+                    }
+
+                    override fun onSuccess(airDailyBean: AirDailyBean?) {
+                        val dailyBeans = airDailyBean?.airDaily
+                        if(null != dailyBeans){
+                            mViewModel.updateAirQualityData(dailyBeans)
+                        }
+                    }
+                })
             }
 
             temperature.observe(viewLifecycleOwner) { temperatureValue ->
