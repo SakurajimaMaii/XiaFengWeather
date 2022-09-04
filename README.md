@@ -1,18 +1,38 @@
 # XiaFengWeather
 
 ## 项目简介
+
 一款基于MVVM开发的天气App，详细介绍参考[XiaFengWeather设计说明](https://github.com/SakurajimaMaii/XiaFengWeather/blob/master/doc/%E5%A4%8F%E9%A3%8E%E5%A4%A9%E6%B0%94%E8%BD%AF%E4%BB%B6V1.0%E8%AF%B4%E6%98%8E%E4%B9%A6.pdf)
 
 ## 项目截图
-![HomeScreenShot](https://github.com/SakurajimaMaii/XiaFengWeather/blob/master/img/HomeScreenShot.jpg)
-![DataScreenShot](https://github.com/SakurajimaMaii/XiaFengWeather/blob/master/img/DataScreenShot.jpg)
-![CityScreenShot](https://github.com/SakurajimaMaii/XiaFengWeather/blob/master/img/CityScreenShot.jpg)
+
+![HomeScreenShot](https://github.com/SakurajimaMaii/XiaFengWeather/tree/master/img/HomeScreenShot.jpg)
+![DataScreenShot](https://github.com/SakurajimaMaii/XiaFengWeather/tree/master/img/DataScreenShot.jpg)
+![CityScreenShot](https://github.com/SakurajimaMaii/XiaFengWeather/tree/master/img/CityScreenShot.jpg)
 
 ## 依赖信息
 
 由于项目使用**Composingbuilds module**进行项目管理，你可以在[PluginVersion](https://github.com/SakurajimaMaii/PluginVersion)获取项目依赖信息
 
+## 数据资源来源
+
+<figure class="third" align=center>
+    <img src="https://dev.qweather.com/assets/images/logo-s-dark.png" style="width:150px">
+    <img src="https://img.alicdn.com/imgextra/i2/O1CN01FF1t1g1Q3PDWpSm4b_!!6000000001920-55-tps-508-135.svg" style="background:#000;width:150px;height:150px;margin-left:45px;margin-right:45px">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIo6IfjnwIfwsAdTNTKV8eLFMDAzssoKWmBA&usqp=CAU" style="width:150px">
+</figure>
+
+项目的数据来源由**和风天气商业版提供**，关于更多内容请访问[和风天气开发平台](https://dev.qweather.com/)
+
+项目的图标资源来源自**阿里云矢量图标库(iconfont)**，关于更多内容请访问[阿里云矢量图标库](https://www.iconfont.cn)
+
+项目的界面设计来源自**Dribbble**，关于更多内容请访问[Dribbble](https://dribbble.com/)
+
 ## 版权信息
+
+夏风天气已经在**中国版权保护中心**申请保护，版权号**2021SRA002648**
+
+## 许可证
 
 MIT License
 
