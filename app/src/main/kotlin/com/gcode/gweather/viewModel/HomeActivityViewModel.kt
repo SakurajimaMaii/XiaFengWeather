@@ -26,8 +26,8 @@ package com.gcode.gweather.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.ave.vastgui.tools.lifecycle.viewModel.VastViewModel
 import com.gcode.gweather.model.PlaceInf
-import com.gcode.vasttools.lifecycle.VastViewModel
 import com.github.aachartmodel.aainfographics.aachartcreator.*
 import com.github.aachartmodel.aainfographics.aaoptionsmodel.*
 import com.github.aachartmodel.aainfographics.aatools.AAGradientColor

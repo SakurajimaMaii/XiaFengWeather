@@ -30,8 +30,8 @@ import android.location.LocationManager
 import com.amap.api.location.AMapLocationClient
 import com.amap.api.location.AMapLocationClientOption
 import com.amap.api.location.AMapLocationListener
-import com.gcode.vasttools.helper.ContextHelper
-import com.gcode.vasttools.utils.LogUtils
+import com.ave.vastgui.tools.helper.ContextHelper
+import com.ave.vastgui.tools.utils.LogUtils
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException

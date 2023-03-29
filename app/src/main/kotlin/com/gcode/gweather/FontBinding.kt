@@ -26,7 +26,7 @@ package com.gcode.gweather
 
 import android.graphics.Typeface
 import androidx.databinding.BindingConversion
-import com.gcode.vasttools.helper.ContextHelper
+import com.ave.vastgui.tools.helper.ContextHelper
 
 object FontBinding {
     @BindingConversion

@@ -26,14 +26,11 @@ package com.gcode.gweather
 
 import android.app.Application
 import com.amap.api.maps.MapsInitializer
-import com.gcode.vasttools.ToolsConfig
+import com.ave.vastgui.tools.config.ToolsConfig
+import com.gcode.gweather.constant.Constant
 import com.qweather.sdk.view.HeConfig
 
 class App : Application() {
-
-    companion object{
-        const val TOKEN = "95f1a215ad5d4eaa828a99f6ebda710c"
-    }
 
     override fun onCreate() {
         super.onCreate()
@@ -42,7 +39,7 @@ class App : Application() {
         MapsInitializer.updatePrivacyAgree(this, true)
         MapsInitializer.updatePrivacyShow(this, true, true)
         // 和风天气更新
-        HeConfig.init("", "")
+        HeConfig.init(Constant.ID, Constant.KEY)
         HeConfig.switchToBizService()
     }
 

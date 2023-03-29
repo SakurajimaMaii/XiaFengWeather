@@ -30,14 +30,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.lifecycleScope
+import com.ave.vastgui.tools.fragment.VastVbVmFragment
+import com.ave.vastgui.tools.utils.ResUtils
+import com.ave.vastgui.tools.utils.ScreenSizeUtils.getMobileScreenHeight
+import com.ave.vastgui.tools.utils.ScreenSizeUtils.getMobileScreenWidth
 import com.gcode.gweather.R
 import com.gcode.gweather.databinding.FragmentDataBinding
 import com.gcode.gweather.utils.AmapUtils
 import com.gcode.gweather.viewModel.HomeActivityViewModel
-import com.gcode.vasttools.fragment.VastVbVmFragment
-import com.gcode.vasttools.utils.ResUtils
-import com.gcode.vasttools.utils.ScreenSizeUtils.getMobileScreenHeight
-import com.gcode.vasttools.utils.ScreenSizeUtils.getMobileScreenWidth
 import com.qweather.sdk.bean.history.HistoricalAirBean
 import com.qweather.sdk.bean.weather.WeatherNowBean
 import com.qweather.sdk.view.QWeather
@@ -49,12 +49,13 @@ import java.util.*
 class DataFragment : VastVbVmFragment<FragmentDataBinding, HomeActivityViewModel>() {
 
     @RequiresApi(Build.VERSION_CODES.R)
-    override fun initView(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         // 初始化界面
         initUI()
         initClickListener()
         // 更新数据
-        mViewModel.apply {
+        getViewModel().apply {
             location.observe(requireActivity()) { location ->
                 QWeather.getWeatherNow(
                     requireActivity(),
@@ -67,7 +68,7 @@ class DataFragment : VastVbVmFragment<FragmentDataBinding, HomeActivityViewModel
                         override fun onSuccess(weatherNowBean: WeatherNowBean?) {
                             val nowWeather = weatherNowBean?.now
                             if (nowWeather != null) {
-                                mViewModel.updateWeatherData(
+                                getViewModel().updateWeatherData(
                                     nowWeather.temp.toFloat(),
                                     nowWeather.feelsLike.toInt(),
                                     nowWeather.humidity.toFloat(),
@@ -100,7 +101,7 @@ class DataFragment : VastVbVmFragment<FragmentDataBinding, HomeActivityViewModel
                         override fun onSuccess(historicalAirBean: HistoricalAirBean?) {
                             val dailyBeans = historicalAirBean?.airHourlyBeans
                             if (null != dailyBeans) {
-                                mViewModel.updateAirQualityData(dailyBeans)
+                                getViewModel().updateAirQualityData(dailyBeans)
                             }
                         }
                     }
@@ -108,35 +109,35 @@ class DataFragment : VastVbVmFragment<FragmentDataBinding, HomeActivityViewModel
             }
 
             temperature.observe(viewLifecycleOwner) { temperatureValue ->
-                mBinding.temperatureValue.text = String.format(
+                getBinding().temperatureValue.text = String.format(
                     ResUtils.getString(R.string.temperature_value),
                     temperatureValue
                 )
             }
 
-            mViewModel.feelslike.observe(viewLifecycleOwner) { feelslike ->
-                mBinding.feelsLikeValue.text = String.format(
+            getViewModel().feelslike.observe(viewLifecycleOwner) { feelslike ->
+                getBinding().feelsLikeValue.text = String.format(
                     ResUtils.getString(R.string.feelslike_temperature_value),
                     feelslike
                 )
             }
 
             visibility.observe(viewLifecycleOwner) { visibilityValue ->
-                mBinding.visibilityValue.text = String.format(
+                getBinding().visibilityValue.text = String.format(
                     ResUtils.getString(R.string.visibility_value),
                     visibilityValue
                 )
             }
 
             humidity.observe(viewLifecycleOwner) { humidityValue ->
-                mBinding.humidityValue.text = String.format(
+                getBinding().humidityValue.text = String.format(
                     ResUtils.getString(R.string.daily_humidity),
                     humidityValue
                 )
             }
 
             windSpeed.observe(viewLifecycleOwner) { windSpeedValue ->
-                mBinding.windSpeedValue.text = String.format(
+                getBinding().windSpeedValue.text = String.format(
                     ResUtils.getString(R.string.wind_speed_value),
                     windSpeedValue
                 )
@@ -146,7 +147,7 @@ class DataFragment : VastVbVmFragment<FragmentDataBinding, HomeActivityViewModel
             weather.observe(viewLifecycleOwner) { weather ->
                 when (weather) {
                     "晴" -> {
-                        mBinding.apply {
+                        getBinding().apply {
                             weatherValue.text =
                                 String.format(
                                     ResUtils.getString(R.string.en_hans_weather_value),
@@ -157,7 +158,7 @@ class DataFragment : VastVbVmFragment<FragmentDataBinding, HomeActivityViewModel
                         }
                     }
                     "多云" -> {
-                        mBinding.apply {
+                        getBinding().apply {
                             weatherValue.text =
                                 String.format(
                                     ResUtils.getString(R.string.en_hans_weather_value),
@@ -168,7 +169,7 @@ class DataFragment : VastVbVmFragment<FragmentDataBinding, HomeActivityViewModel
                         }
                     }
                     "阵雨" -> {
-                        mBinding.apply {
+                        getBinding().apply {
                             weatherValue.text =
                                 String.format(
                                     ResUtils.getString(R.string.en_hans_weather_value),
@@ -179,7 +180,7 @@ class DataFragment : VastVbVmFragment<FragmentDataBinding, HomeActivityViewModel
                         }
                     }
                     "阴" -> {
-                        mBinding.apply {
+                        getBinding().apply {
                             weatherValue.text =
                                 String.format(
                                     ResUtils.getString(R.string.en_hans_weather_value),
@@ -193,7 +194,7 @@ class DataFragment : VastVbVmFragment<FragmentDataBinding, HomeActivityViewModel
             }
 
             chartModelUpdateSeriesArray.observe(requireActivity()) { seriesArray ->
-                mBinding.airQualityChartView.aa_onlyRefreshTheChartDataWithChartOptionsSeriesArray(
+                getBinding().airQualityChartView.aa_onlyRefreshTheChartDataWithChartOptionsSeriesArray(
                     seriesArray, true
                 )
             }
@@ -201,12 +202,12 @@ class DataFragment : VastVbVmFragment<FragmentDataBinding, HomeActivityViewModel
     }
 
     private fun initClickListener() {
-        mBinding.apply {
+        getBinding().apply {
             refreshLayout.setOnLoadMoreListener { refreshLayout ->
                 var location: String
                 lifecycleScope.launch {
                     location = AmapUtils.getLocation()
-                    mViewModel.searchPlaces(location)
+                    getViewModel().searchPlaces(location)
                 }
                 refreshLayout.finishLoadMore(1500 /*,false*/) //传入false表示加载失败
             }
@@ -215,8 +216,8 @@ class DataFragment : VastVbVmFragment<FragmentDataBinding, HomeActivityViewModel
 
     @RequiresApi(Build.VERSION_CODES.R)
     private fun initUI() {
-        mBinding.apply {
-            airQualityChartView.aa_drawChartWithChartOptions(mViewModel.aqiChart())
+        getBinding().apply {
+            airQualityChartView.aa_drawChartWithChartOptions(getViewModel().aqiChart())
 
             //获取屏幕高度
             val screenHeight = getMobileScreenHeight()

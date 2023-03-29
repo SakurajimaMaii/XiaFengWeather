@@ -22,19 +22,18 @@
  * SOFTWARE.
  */
 
-import com.gcode.plugin.version.*
+import com.pluginversion.vastgui.*
 
 plugins{
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-kapt")
-    id("com.gcode.plugin.version")
+    id("com.pluginversion.vastgui")
 }
 
 
 android {
     compileSdk = Version.compile_sdk_version
-    buildToolsVersion = Version.build_tools_version
 
     defaultConfig {
         applicationId = "com.gcode.gweather"
@@ -85,12 +84,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = Version.java_version
+        targetCompatibility = Version.java_version
     }
 
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = Version.java_version.toString()
     }
 
     buildFeatures {
@@ -106,8 +105,7 @@ android {
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs","include" to listOf("*.jar"))))
 
-    implementation(files("libs/VastTools_0.0.9_Cancey.jar"))
-    implementation(files("libs/QWeather_Public_Android_V4.10.jar"))
+    implementation(AVE.tools)
 
     implementation(AndroidX.activity_ktx)
     implementation(AndroidX.core_ktx)

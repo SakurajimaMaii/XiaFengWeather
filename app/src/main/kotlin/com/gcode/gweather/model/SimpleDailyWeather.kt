@@ -24,11 +24,11 @@
 
 package com.gcode.gweather.model
 
+import com.ave.vastgui.tools.utils.ResUtils
 import com.gcode.gweather.R
 import com.gcode.vastadapter.interfaces.VAapClickEventListener
 import com.gcode.vastadapter.interfaces.VAdpLongClickEventListener
 import com.gcode.vastadapter.interfaces.VastBindAdapterItem
-import com.gcode.vasttools.utils.ResUtils
 
 // Author: Vast Gui
 // Email: guihy2019@gmail.com

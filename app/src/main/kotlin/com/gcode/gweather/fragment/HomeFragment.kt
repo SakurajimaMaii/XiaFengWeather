@@ -31,6 +31,8 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.ave.vastgui.tools.fragment.VastVbVmFragment
+import com.ave.vastgui.tools.utils.ToastUtils
 import com.gcode.gweather.BR
 import com.gcode.gweather.R
 import com.gcode.gweather.databinding.FragmentHomeBinding
@@ -38,12 +40,10 @@ import com.gcode.gweather.model.SimpleDailyWeather
 import com.gcode.gweather.viewModel.HomeActivityViewModel
 import com.gcode.vastadapter.base.VastBindAdapter
 import com.gcode.vastadapter.interfaces.VastBindAdapterItem
-import com.gcode.vasttools.fragment.VastVbVmFragment
-import com.gcode.vasttools.utils.ToastUtils
 import com.qweather.sdk.bean.weather.WeatherDailyBean
 import com.qweather.sdk.view.QWeather
 
-class HomeFragment : VastVbVmFragment<FragmentHomeBinding,HomeActivityViewModel>() {
+class HomeFragment : VastVbVmFragment<FragmentHomeBinding, HomeActivityViewModel>() {
 
     private class DataBindingAdapter(
         items: MutableList<VastBindAdapterItem>,
@@ -59,24 +59,25 @@ class HomeFragment : VastVbVmFragment<FragmentHomeBinding,HomeActivityViewModel>
     private lateinit var layoutManager: RecyclerView.LayoutManager
 
     @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
-    override fun initView(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         adapter = DataBindingAdapter(dailyWeatherList,requireActivity())
         layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
         val bundle = arguments
         val username = bundle?.getString("username")
-        ToastUtils.showShortMsg(requireActivity(), username.toString())
+        ToastUtils.showShortMsg(username.toString())
 
-        mBinding.dailyWeatherList.adapter = adapter
-        mBinding.dailyWeatherList.layoutManager = layoutManager
+        getBinding().dailyWeatherList.adapter = adapter
+        getBinding().dailyWeatherList.layoutManager = layoutManager
 
-        mViewModel.apply {
+        getViewModel().apply {
             /**
              * 更新温度文字描述
              */
             temperature.observe(viewLifecycleOwner) { temperatureValue ->
-                mBinding.temperatureValue.text = "$temperatureValue°"
+                getBinding().temperatureValue.text = "$temperatureValue°"
             }
 
             /**
@@ -85,25 +86,25 @@ class HomeFragment : VastVbVmFragment<FragmentHomeBinding,HomeActivityViewModel>
             weather.observe(viewLifecycleOwner) { weather ->
                 when (weather) {
                     "晴" -> {
-                        mBinding.apply {
+                        getBinding().apply {
                             weatherValue.text = "sun $weather"
                             weatherIcon.setImageResource(R.drawable.sun)
                         }
                     }
                     "多云" -> {
-                        mBinding.apply {
+                        getBinding().apply {
                             weatherValue.text = "cloudy $weather"
                             weatherIcon.setImageResource(R.drawable.partly_cloudy)
                         }
                     }
                     "阵雨" -> {
-                        mBinding.apply {
+                        getBinding().apply {
                             weatherValue.text = "showers $weather"
                             weatherIcon.setImageResource(R.drawable.light_rain)
                         }
                     }
                     "阴" -> {
-                        mBinding.apply {
+                        getBinding().apply {
                             weatherValue.text = "cloudy $weather"
                             weatherIcon.setImageResource(R.drawable.partly_cloudy)
                         }
@@ -112,7 +113,7 @@ class HomeFragment : VastVbVmFragment<FragmentHomeBinding,HomeActivityViewModel>
             }
 
             placeInf.observe(viewLifecycleOwner) {
-                mBinding.cityName.text = it.name
+                getBinding().cityName.text = it.name
             }
 
             location.observe(viewLifecycleOwner) { location ->
@@ -124,7 +125,7 @@ class HomeFragment : VastVbVmFragment<FragmentHomeBinding,HomeActivityViewModel>
                     override fun onSuccess(weatherDailyBean: WeatherDailyBean?) {
                         val daily = weatherDailyBean?.daily
                         if(null != daily){
-                            mViewModel.updateDailyWeathers(daily)
+                            getViewModel().updateDailyWeathers(daily)
                         }
                     }
                 })
@@ -149,11 +150,11 @@ class HomeFragment : VastVbVmFragment<FragmentHomeBinding,HomeActivityViewModel>
 
             isGpsOpen.observe(viewLifecycleOwner) {
                 if (it) {
-                    mBinding.dailyWeatherList.visibility = View.VISIBLE
-                    mBinding.progressBar.visibility = View.GONE
+                    getBinding().dailyWeatherList.visibility = View.VISIBLE
+                    getBinding().progressBar.visibility = View.GONE
                 } else {
-                    mBinding.dailyWeatherList.visibility = View.GONE
-                    mBinding.progressBar.visibility = View.VISIBLE
+                    getBinding().dailyWeatherList.visibility = View.GONE
+                    getBinding().progressBar.visibility = View.VISIBLE
                 }
             }
 
@@ -164,7 +165,7 @@ class HomeFragment : VastVbVmFragment<FragmentHomeBinding,HomeActivityViewModel>
                     false ->
                         LinearLayoutManager(requireActivity())
                 }
-                mBinding.dailyWeatherList.layoutManager = layoutManager
+                getBinding().dailyWeatherList.layoutManager = layoutManager
             }
         }
     }

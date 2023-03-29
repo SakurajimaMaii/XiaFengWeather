@@ -26,7 +26,6 @@ package com.gcode.gweather.activity
 
 import android.Manifest
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -38,6 +37,11 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.ave.vastgui.tools.activity.VastVbVmActivity
+import com.ave.vastgui.tools.adapter.VastFragmentAdapter
+import com.ave.vastgui.tools.utils.LogUtils
+import com.ave.vastgui.tools.utils.ToastUtils
+import com.ave.vastgui.tools.view.dialog.MaterialAlertDialogBuilder
 import com.gcode.gweather.R
 import com.gcode.gweather.databinding.ActivityHomeBinding
 import com.gcode.gweather.fragment.CityFragment
@@ -45,10 +49,6 @@ import com.gcode.gweather.fragment.DataFragment
 import com.gcode.gweather.fragment.HomeFragment
 import com.gcode.gweather.utils.AmapUtils
 import com.gcode.gweather.viewModel.HomeActivityViewModel
-import com.gcode.vasttools.activity.VastVbVmActivity
-import com.gcode.vasttools.adapter.VastFragmentAdapter
-import com.gcode.vasttools.utils.LogUtils
-import com.gcode.vasttools.utils.ToastUtils
 import com.permissionx.guolindev.PermissionX
 import com.qweather.sdk.bean.base.Range
 import com.qweather.sdk.bean.geo.GeoBean
@@ -65,7 +65,8 @@ class HomeActivity : VastVbVmActivity<ActivityHomeBinding, HomeActivityViewModel
             }
         }
 
-    override fun initView(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         PermissionX.init(this)
             .permissions(
@@ -74,26 +75,26 @@ class HomeActivity : VastVbVmActivity<ActivityHomeBinding, HomeActivityViewModel
             )
             .request { allGranted, _, deniedList ->
                 if (allGranted) {
-                    LogUtils.i(defaultTag, "All permissions are granted")
+                    LogUtils.i(getDefaultTag(), "All permissions are granted")
                 } else {
-                    ToastUtils.showShortMsg(this, "These permissions are denied: $deniedList")
+                    ToastUtils.showShortMsg("These permissions are denied: $deniedList")
                 }
             }
 
         AmapUtils.startClient()
 
         //设置顶部栏
-        setSupportActionBar(mBinding.homeToolbar)
+        setSupportActionBar(getBinding().homeToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         isGpsOPen()
 
-        mViewModel.currentPage.observe(this) {
-            mBinding.viewPager.currentItem = it
-            mBinding.bottomNavView.selectTabAt(it)
+        getViewModel().currentPage.observe(this) {
+            getBinding().viewPager.currentItem = it
+            getBinding().bottomNavView.selectTabAt(it)
         }
 
-        mViewModel.location.observe(this) {
+        getViewModel().location.observe(this) {
             QWeather.getGeoCityLookup(this, it, Range.CN, 1, null, object : QWeather.OnResultGeoListener {
                     override fun onError(throwable: Throwable?) {
                         throwable?.printStackTrace()
@@ -101,13 +102,13 @@ class HomeActivity : VastVbVmActivity<ActivityHomeBinding, HomeActivityViewModel
 
                     override fun onSuccess(geoBean: GeoBean?) {
                         if (geoBean != null) {
-                            mViewModel.updateLocationID(geoBean.locationBean[0].id)
+                            getViewModel().updateLocationID(geoBean.locationBean[0].id)
                         }
                     }
                 })
         }
 
-        mBinding.viewPager.apply {
+        getBinding().viewPager.apply {
             this.adapter = VastFragmentAdapter(this@HomeActivity, ArrayList<Fragment>().apply {
                 add(HomeFragment())
                 add(DataFragment())
@@ -116,7 +117,7 @@ class HomeActivity : VastVbVmActivity<ActivityHomeBinding, HomeActivityViewModel
             isUserInputEnabled = false
         }
 
-        mBinding.bottomNavView.setOnTabSelectListener(object :
+        getBinding().bottomNavView.setOnTabSelectListener(object :
             AnimatedBottomBar.OnTabSelectListener {
             override fun onTabSelected(
                 lastIndex: Int,
@@ -124,21 +125,21 @@ class HomeActivity : VastVbVmActivity<ActivityHomeBinding, HomeActivityViewModel
                 newIndex: Int,
                 newTab: AnimatedBottomBar.Tab
             ) {
-                mBinding.viewPager.currentItem = newIndex
+                getBinding().viewPager.currentItem = newIndex
             }
 
             // An optional method that will be fired whenever an already selected tab has been selected again.
             override fun onTabReselected(index: Int, tab: AnimatedBottomBar.Tab) {
-                mBinding.viewPager.currentItem = index
+                getBinding().viewPager.currentItem = index
             }
         })
     }
 
     override fun onBackPressed() {
-        if (mBinding.viewPager.currentItem == 0) {
+        if (getBinding().viewPager.currentItem == 0) {
             super.onBackPressed()
         } else {
-            mBinding.viewPager.currentItem = mBinding.viewPager.currentItem - 1
+            getBinding().viewPager.currentItem = getBinding().viewPager.currentItem - 1
         }
     }
 
@@ -152,7 +153,7 @@ class HomeActivity : VastVbVmActivity<ActivityHomeBinding, HomeActivityViewModel
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.spin_list -> {
-                mViewModel.spin.value?.let { mViewModel.spinList(!it) }
+                getViewModel().spin.value?.let { getViewModel().spinList(!it) }
             }
         }
         return super.onOptionsItemSelected(item)
@@ -169,13 +170,13 @@ class HomeActivity : VastVbVmActivity<ActivityHomeBinding, HomeActivityViewModel
             var location: String
             lifecycleScope.launch {
                 location = AmapUtils.getLocation()
-                mViewModel.searchPlaces(location)
-                mViewModel.setGpsStatus(true)
-                mViewModel.updateLocationID(location)
+                getViewModel().searchPlaces(location)
+                getViewModel().setGpsStatus(true)
+                getViewModel().updateLocationID(location)
             }
         } else {
-            mViewModel.setGpsStatus(false)
-            AlertDialog.Builder(this)
+            getViewModel().setGpsStatus(false)
+            MaterialAlertDialogBuilder(this)
                 .setTitle("提示消息")
                 .setMessage("定位未打开,请前往设置界面打开")
                 .setPositiveButton(
