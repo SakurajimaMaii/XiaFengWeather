@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ MIT License
   ~
-  ~ Copyright (c) 2021 Vast Gui
+  ~ Copyright (c) 2024 Vast Gui
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
   ~ of this software and associated documentation files (the "Software"), to deal
@@ -25,28 +24,31 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activity.SearchCityActivity"
-        android:background="@drawable/main_background">
+        android:background="@drawable/main_background"
+        tools:context=".activity.SearchCityActivity">
+
         <SearchView
             android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:iconifiedByDefault="false"
-            android:focusable="auto"
-            android:searchIcon="@drawable/ic_search"
-            android:goIcon="@drawable/ic_go"
-            android:closeIcon="@drawable/ic_cancel"
-            android:queryHint="请输入要搜索的城市"
+            android:alpha="0.85"
             android:background="@drawable/searchview_background"
-            android:alpha="0.85"/>
+            android:closeIcon="@drawable/ic_cancel"
+            android:focusable="auto"
+            android:goIcon="@drawable/ic_go"
+            android:iconifiedByDefault="false"
+            android:queryHint="请输入要搜索的城市"
+            android:searchIcon="@drawable/ic_search" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/cityList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/searchView"/>
+            android:layout_below="@id/searchView" />
     </RelativeLayout>
 </layout>

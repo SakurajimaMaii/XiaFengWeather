@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ MIT License
   ~
-  ~ Copyright (c) 2021 Vast Gui
+  ~ Copyright (c) 2024 Vast Gui
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
   ~ of this software and associated documentation files (the "Software"), to deal
@@ -31,12 +30,13 @@
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ScrollView
             android:id="@+id/home_activity_data_fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/main_background"
-            tools:context="com.gcode.gweather.fragment.DataFragment"
+            tools:context="com.xfw.vastgui.fragment.DataFragment"
             tools:ignore="ScrollViewCount">
 
             <LinearLayout
@@ -130,9 +130,9 @@
                         android:id="@+id/DataLinearLayout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:background="#152C39"
                         android:baselineAligned="false"
                         android:orientation="horizontal"
-                        android:background="#152C39"
                         android:padding="6sp">
 
                         <LinearLayout
@@ -148,7 +148,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center_horizontal"
-                                android:text="@string/test"
                                 app:gradient_animate="false"
                                 app:gradient_direction="topToBottom"
                                 app:gradient_endColor="#FF7400"
@@ -177,7 +176,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center_horizontal"
-                                android:text="@string/test"
                                 app:gradient_animate="false"
                                 app:gradient_direction="topToBottom"
                                 app:gradient_endColor="#0C5DA5"
@@ -206,7 +204,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center_horizontal"
-                                android:text="@string/test"
                                 app:gradient_animate="false"
                                 app:gradient_direction="topToBottom"
                                 app:gradient_endColor="#7516A5"

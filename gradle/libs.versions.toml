@@ -1,0 +1,63 @@
+[versions]
+aachartcore = "7.2.0"
+activityKtx = "1.8.2"
+annotation = "1.7.1"
+appcompat = "1.6.1"
+cardview = "1.0.0"
+circleimageview = "3.1.0"
+constraintlayout = "2.1.4"
+coreKtx = "1.12.0"
+espressoCore = "3.5.1"
+fragmentTesting = "1.6.2"
+gradienttext = "1.0.2"
+gradle = "8.1.4"
+gson = "2.10.1"
+junit = "1.1.5"
+junitVersion = "4.13.2"
+kotlinGradlePlugin = "1.9.0"
+kotlinxCoroutinesCore = "1.7.3"
+library = "1.1.0"
+lifecyclektx = "2.7.0"
+location = "latest.integration"
+material = "1.11.0"
+okhttp = "4.12.0"
+recyclerview = "1.3.2"
+refreshLayoutKernel = "2.0.5"
+retrofit = "2.9.0"
+vastadapter = "1.1.1"
+vasttools = "1.1.1"
+viewpager2 = "1.0.0"
+
+[libraries]
+aachartcore = { module = "com.github.AAChartModel:AAChartCore-Kotlin", version.ref = "aachartcore" }
+activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
+annotation = { module = "androidx.annotation:annotation", version.ref = "annotation" }
+appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+cardview = { module = "androidx.cardview:cardview", version.ref = "cardview" }
+circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circleimageview" }
+constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
+espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
+fragment-testing = { module = "androidx.fragment:fragment-testing", version.ref = "fragmentTesting" }
+gradienttext = { module = "io.github.weilianyang:gradienttext", version.ref = "gradienttext" }
+gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+junit = { module = "androidx.test.ext:junit", version.ref = "junit" }
+junit-junit = { module = "junit:junit", version.ref = "junitVersion" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinGradlePlugin" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesCore" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
+library = { module = "nl.joery.animatedbottombar:library", version.ref = "library" }
+lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecyclektx" }
+lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecyclektx" }
+location = { module = "com.amap.api:location", version.ref = "location" }
+material = { module = "com.google.android.material:material", version.ref = "material" }
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
+refresh-header-radar = { module = "io.github.scwang90:refresh-header-radar", version.ref = "refreshLayoutKernel" }
+refresh-layout-kernel = { module = "io.github.scwang90:refresh-layout-kernel", version.ref = "refreshLayoutKernel" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+vastadapter = { module = "io.github.sakurajimamaii:VastAdapter", version.ref = "vastadapter" }
+vasttools = { module = "io.github.sakurajimamaii:VastTools", version.ref = "vasttools" }
+viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "viewpager2" }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2021 Vast Gui
+ * Copyright (c) 2024 Vast Gui
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,34 +22,23 @@
  * SOFTWARE.
  */
 
-import com.pluginversion.vastgui.*
-
-plugins{
+plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-kapt")
-    id("com.pluginversion.vastgui")
 }
 
-
 android {
-    compileSdk = Version.compile_sdk_version
+    compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.gcode.gweather"
-        minSdk = Version.min_sdk_version
-        targetSdk = Version.target_sdk_version
-        versionCode = Version.version_code
-        versionName = Version.version_name
+        applicationId = "com.xfw.vastgui"
+        minSdk = 23
+        targetSdk = 34
+        versionCode = 1
+        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        ndk {
-            // 选择要添加的对应cpu类型的.so库,只支持七种 mips,
-            // mips64, X86, X86_64, arm64-v8a, armeabi, armeabi-v7a
-            // 参考: https://mp.weixin.qq.com/s/jnZpgaRFQT5ULk9tHWMAGg
-            abiFilters.add("arm64-v8a")
-        }
     }
 
     signingConfigs {
@@ -73,23 +62,30 @@ android {
             isJniDebuggable = false
             isShrinkResources = true
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),"proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
         debug {
             isDebuggable = true
             isJniDebuggable = true
             isShrinkResources = false
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 
     compileOptions {
-        sourceCompatibility = Version.java_version
-        targetCompatibility = Version.java_version
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = Version.java_version.toString()
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
 
     buildFeatures {
@@ -97,49 +93,41 @@ android {
         dataBinding = true
     }
 
-    namespace = "com.gcode.gweather"
+    namespace = "com.xfw.vastgui"
 
     sourceSets["main"].java.srcDir("src/main/kotlin")
 }
 
 dependencies {
-    implementation(fileTree(mapOf("dir" to "libs","include" to listOf("*.jar"))))
-
-    implementation(AVE.tools)
-
-    implementation(AndroidX.activity_ktx)
-    implementation(AndroidX.core_ktx)
-    implementation(AndroidX.appcompat)
-    implementation(AndroidX.recyclerview)
-    implementation(AndroidX.cardview)
-    implementation(AndroidX.constraintlayout)
-    implementation(AndroidX.viewpager2)
-    implementation(AndroidX.annotation)
-    implementation(AndroidX.lifecycle_viewmodel_ktx)
-    implementation(AndroidX.lifecycle_livedata_ktx)
-    androidTestImplementation(AndroidX.junit)
-    androidTestImplementation(AndroidX.espresso_core)
-    debugImplementation(AndroidX.fragment_testing)
-
-    implementation(Google.material)
-    implementation(Google.gson)
-
-    implementation(Jetbrains.kotlinx_coroutines_core)
-    implementation(Jetbrains.kotlinx_coroutines_android)
-
-    implementation(Squareup.okhttp3)
-    implementation(Squareup.retrofit2)
-    implementation(Squareup.retrofit2_converter_gson)
-
-    implementation(Libraries.animatedbottombar)
-    implementation(Libraries.donut)
-    implementation(Libraries.gradienttext)
-    implementation(Libraries.permissionx)
-    implementation(Libraries.circleimageview)
-    implementation(Libraries.navi_3dmap)
-    implementation(Libraries.aachartcore_kotlin)
-    implementation(Libraries.refresh_layout_kernel)
-    implementation(Libraries.refresh_header_radar)
-    implementation(Libraries.vastadapter)
-    testImplementation(Libraries.junit)
+    implementation(project(":qweather-ktx"))
+    implementation(libs.vastadapter)
+    implementation(libs.vasttools)
+    implementation(libs.activity.ktx)
+    implementation(libs.core.ktx)
+    implementation(libs.appcompat)
+    implementation(libs.recyclerview)
+    implementation(libs.cardview)
+    implementation(libs.constraintlayout)
+    implementation(libs.viewpager2)
+    implementation(libs.annotation)
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.lifecycle.livedata.ktx)
+    androidTestImplementation(libs.junit)
+    androidTestImplementation(libs.espresso.core)
+    debugImplementation(libs.fragment.testing)
+    implementation(libs.material)
+    implementation(libs.gson)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.okhttp)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.library)
+    implementation(libs.gradienttext)
+    implementation(libs.circleimageview)
+    implementation(libs.location)
+    implementation(libs.aachartcore)
+    implementation(libs.refresh.layout.kernel)
+    implementation(libs.refresh.header.radar)
+    testImplementation(libs.junit.junit)
 }

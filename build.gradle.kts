@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2021 Vast Gui
+ * Copyright (c) 2024 Vast Gui
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,8 +30,8 @@ buildscript {
         maven("https://www.jitpack.io")
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:8.1.0-alpha10")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10")
+        classpath(libs.gradle)
+        classpath(libs.kotlin.gradle.plugin)
     }
 }
 
@@ -40,7 +40,6 @@ allprojects {
         google()
         mavenCentral()
         maven("https://www.jitpack.io")
-        maven("https://maven.aliyun.com/repository/jcenter")
     }
 }
 
