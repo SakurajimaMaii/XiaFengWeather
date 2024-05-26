@@ -26,8 +26,15 @@ package com.xfw.vastgui
 
 import android.app.Application
 import com.amap.api.location.AMapLocationClient
-import com.xfw.vastgui.constant.Constant
-import com.qweather.sdk.view.HeConfig
+import com.qwsdk.vastgui.QWSdk
+import com.xfw.vastgui.constant.KEY
+import com.xfw.vastgui.log.mLogFactory
+
+// 获取单例对象
+val qwConfiguration = QWSdk.Configuration(QWSdk.Plan.Standard, KEY){
+    mLogFactory.getLog(QWSdk::class.java).d(it)
+}
+val qw = QWSdk.getInstance(qwConfiguration)
 
 class App : Application() {
 
@@ -36,9 +43,6 @@ class App : Application() {
         // 高德地图隐私更新
         AMapLocationClient.updatePrivacyAgree(this, true)
         AMapLocationClient.updatePrivacyShow(this, true, true)
-        // 和风天气更新
-        HeConfig.init(Constant.ID, Constant.KEY)
-        HeConfig.switchToBizService()
     }
 
 }

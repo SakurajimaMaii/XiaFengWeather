@@ -42,6 +42,7 @@ import com.ave.vastgui.tools.utils.permission.Permission
 import com.ave.vastgui.tools.utils.permission.requestMultiplePermissions
 import com.ave.vastgui.tools.view.dialog.MaterialAlertDialogBuilder
 import com.ave.vastgui.tools.view.toast.SimpleToast
+import com.qwsdk.vastgui.utils.Coordinate
 import com.xfw.vastgui.R
 import com.xfw.vastgui.databinding.ActivityHomeBinding
 import com.xfw.vastgui.fragment.CityFragment
@@ -148,7 +149,7 @@ class HomeActivity : VastVbVmActivity<ActivityHomeBinding, HomeActivityViewModel
     private fun isGpsOPen() {
         //判断GPS是否打开
         if (AmapUtils.isOPen(this)) {
-            var location: String
+            var location: Coordinate
             lifecycleScope.launch {
                 try {
                     location = AmapUtils.getLocation()

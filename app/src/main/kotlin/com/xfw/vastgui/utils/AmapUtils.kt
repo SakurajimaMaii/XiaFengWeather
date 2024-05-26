@@ -30,16 +30,17 @@ import android.location.LocationManager
 import com.amap.api.location.AMapLocationClient
 import com.amap.api.location.AMapLocationClientOption
 import com.amap.api.location.AMapLocationListener
+import com.ave.vastgui.core.text.safeToDouble
 import com.ave.vastgui.tools.content.ContextHelper
+import com.qwsdk.vastgui.utils.Coordinate
 import com.xfw.vastgui.log.mLogFactory
+import java.util.Locale
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-/**
- * 高德地图工具类
- */
+/** 高德地图工具类 */
 object AmapUtils {
 
     private val mLogger = mLogFactory.getLog(AmapUtils::class.java)
@@ -68,14 +69,12 @@ object AmapUtils {
 
     //https://docs.seniverse.com/api/start/common.html#%E5%9C%B0%E7%82%B9-location
     /**
-     * 将请求到的数据转换成Api location中要求格式
-     * 详情参照上方链接
+     * 将请求到的数据转换成Api location中要求格式 详情参照上方链接
+     *
      * @return String
      */
-    suspend fun getLocation(): String {
-        /**
-         * 设置场景模式后最好调用一次stop，再调用start以保证场景模式生效
-         */
+    suspend fun getLocation(): Coordinate {
+        /** 设置场景模式后最好调用一次stop，再调用start以保证场景模式生效 */
         mLocationClient.apply {
             stopLocation()
             startLocation()
@@ -83,12 +82,13 @@ object AmapUtils {
         suspendCoroutine {
             continuation = it
         }
-        return String.format("%.2f", longitude) + "," + String.format("%.2f", latitude)
+        return Coordinate(
+            String.format(Locale.ENGLISH, "%.2f", longitude).safeToDouble(0.0),
+            String.format(Locale.ENGLISH, "%.2f", latitude).safeToDouble(0.0)
+        )
     }
 
-    /**
-     * 启动定位客户端，同时启动本地定位服务。
-     */
+    /** 启动定位客户端，同时启动本地定位服务。 */
     fun startClient() {
         //声明AMapLocationClientOption对象并初始化
         mLocationOption = AMapLocationClientOption().apply {
@@ -111,16 +111,12 @@ object AmapUtils {
         }
     }
 
-    /**
-     * 销毁定位客户端，同时销毁本地定位服务。
-     */
+    /** 销毁定位客户端，同时销毁本地定位服务。 */
     fun destroyClient() {
         mLocationClient.onDestroy()
     }
 
-    /**
-     * 接收数据并解析
-     */
+    /** 接收数据并解析 */
     private val mAMapLocationListener = AMapLocationListener { amapLocation ->
         if (amapLocation != null) {
             if (amapLocation.errorCode == 0) {

@@ -35,18 +35,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ave.vastgui.adapter.VastBindAdapter
 import com.ave.vastgui.adapter.base.ItemWrapper
 import com.ave.vastgui.tools.fragment.VastVbVmFragment
+import com.qwsdk.vastgui.entity.geo.lookup.GeoLookup
 import com.xfw.vastgui.BR
 import com.xfw.vastgui.R
 import com.xfw.vastgui.databinding.FragmentCityBinding
 import com.xfw.vastgui.viewModel.HomeActivityViewModel
-import com.qweather.sdk.bean.geo.GeoBean
 import kotlinx.coroutines.launch
 
 class CityFragment : VastVbVmFragment<FragmentCityBinding, HomeActivityViewModel>() {
 
     private class PlaceAdapter(context: Context) :
-        VastBindAdapter<GeoBean.LocationBean>(context, BR.location) {
-        fun addCity(city: GeoBean.LocationBean) {
+        VastBindAdapter<GeoLookup.Location>(context, BR.location) {
+        fun addCity(city: GeoLookup.Location) {
             val index = itemCount
             mDataSource.add(
                 index, ItemWrapper(city, R.layout.item_city_information)
@@ -85,7 +85,7 @@ class CityFragment : VastVbVmFragment<FragmentCityBinding, HomeActivityViewModel
 
         getBinding().cityList.adapter = mAdapter.apply {
             setOnItemClickListener { _, _, wrapper ->
-                getViewModel().searchPlaces(wrapper.getData().id)
+                // getViewModel().searchPlaces(wrapper.getData().id)
                 getViewModel().setCurrentPage(0)
             }
         }

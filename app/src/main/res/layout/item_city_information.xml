@@ -26,10 +26,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="location"
-            type="com.qweather.sdk.bean.geo.GeoBean.LocationBean" />
+            type="com.qwsdk.vastgui.entity.geo.lookup.GeoLookup.Location" />
     </data>
 
     <androidx.cardview.widget.CardView

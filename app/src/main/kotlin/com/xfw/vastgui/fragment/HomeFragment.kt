@@ -36,21 +36,21 @@ import com.ave.vastgui.adapter.VastBindAdapter
 import com.ave.vastgui.adapter.base.ItemWrapper
 import com.ave.vastgui.tools.fragment.VastVbVmFragment
 import com.ave.vastgui.tools.view.toast.SimpleToast
+import com.qwsdk.vastgui.entity.weather.daily.WeatherDaily
 import com.xfw.vastgui.BR
 import com.xfw.vastgui.R
 import com.xfw.vastgui.databinding.FragmentHomeBinding
 import com.xfw.vastgui.viewModel.HomeActivityViewModel
-import com.qweather.sdk.bean.weather.WeatherDailyBean
 import kotlinx.coroutines.launch
 
 class HomeFragment : VastVbVmFragment<FragmentHomeBinding, HomeActivityViewModel>() {
 
     private class DailyWeatherAdapter(context: Context) :
-        VastBindAdapter<WeatherDailyBean.DailyBean>(context, BR.dailyWeather) {
+        VastBindAdapter<WeatherDaily.Daily>(context, BR.dailyWeather) {
         /**
          * 添加当日天气数据
          */
-        fun addDailyWeather(daily: WeatherDailyBean.DailyBean) {
+        fun addDailyWeather(daily: WeatherDaily.Daily) {
             val index = itemCount
             mDataSource.add(
                 index, ItemWrapper(daily, R.layout.item_daily_weather)
@@ -97,32 +97,32 @@ class HomeFragment : VastVbVmFragment<FragmentHomeBinding, HomeActivityViewModel
             /** 更新温度文字描述 */
             getViewModel().weatherNow.collect{
                 if(null == it) return@collect
-                getBinding().temperatureValue.text = "${it.now.temp}°"
-                when (it.now.text) {
+                getBinding().temperatureValue.text = "${it.now?.temp}°"
+                when (it.now?.text) {
                     "晴" -> {
                         getBinding().apply {
-                            weatherValue.text = "sun ${it.now.text}"
+                            weatherValue.text = "sun ${it.now?.text}"
                             weatherIcon.setImageResource(R.drawable.sun)
                         }
                     }
 
                     "多云" -> {
                         getBinding().apply {
-                            weatherValue.text = "cloudy ${it.now.text}"
+                            weatherValue.text = "cloudy ${it.now?.text}"
                             weatherIcon.setImageResource(R.drawable.partly_cloudy)
                         }
                     }
 
                     "阵雨" -> {
                         getBinding().apply {
-                            weatherValue.text = "showers ${it.now.text}"
+                            weatherValue.text = "showers ${it.now?.text}"
                             weatherIcon.setImageResource(R.drawable.light_rain)
                         }
                     }
 
                     "阴" -> {
                         getBinding().apply {
-                            weatherValue.text = "cloudy ${it.now.text}"
+                            weatherValue.text = "cloudy ${it.now?.text}"
                             weatherIcon.setImageResource(R.drawable.partly_cloudy)
                         }
                     }

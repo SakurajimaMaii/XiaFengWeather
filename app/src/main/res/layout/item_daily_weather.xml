@@ -29,7 +29,7 @@
         <import type="com.xfw.vastgui.model.weather.WeatherDailyBeanKt" />
         <variable
             name="dailyWeather"
-            type="com.qweather.sdk.bean.weather.WeatherDailyBean.DailyBean" />
+            type="com.qwsdk.vastgui.entity.weather.daily.WeatherDaily.Daily" />
     </data>
 
     <androidx.cardview.widget.CardView

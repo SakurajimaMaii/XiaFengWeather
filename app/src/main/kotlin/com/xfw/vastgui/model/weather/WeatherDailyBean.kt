@@ -25,14 +25,14 @@
 package com.xfw.vastgui.model.weather
 
 import com.ave.vastgui.tools.utils.findByContext
+import com.qwsdk.vastgui.entity.weather.daily.WeatherDaily
 import com.xfw.vastgui.R
-import com.qweather.sdk.bean.weather.WeatherDailyBean
 
 // Author: Vast Gui
 // Email: guihy2019@gmail.com
 // Date: 2024/1/14 15:29
 
-fun WeatherDailyBean.DailyBean.icon(): String = when (iconDay) {
+fun WeatherDaily.Daily.icon(): String = when (iconDay) {
     "晴" ->
         findByContext { getString(R.string.ic_sunny_day) }
 

@@ -28,9 +28,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ave.vastgui.tools.content.ContextHelper
+import com.ave.vastgui.core.text.safeToDouble
 import com.ave.vastgui.tools.utils.DateUtils
-import com.xfw.vastgui.fragment.CityFragment
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartAlignType
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartAnimationType
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartFontWeightType
@@ -57,11 +56,17 @@ import com.github.aachartmodel.aainfographics.aaoptionsmodel.AAXAxis
 import com.github.aachartmodel.aainfographics.aaoptionsmodel.AAYAxis
 import com.github.aachartmodel.aainfographics.aatools.AAGradientColor
 import com.github.aachartmodel.aainfographics.aatools.AALinearGradientDirection
-import com.qweather.sdk.bean.geo.GeoBean
-import com.qweather.sdk.bean.history.HistoricalAirBean
-import com.qweather.sdk.bean.weather.WeatherDailyBean
-import com.qweather.sdk.bean.weather.WeatherNowBean
-import com.qweatherktx.vastgui.weather.QWeatherKTX
+import com.qwsdk.vastgui.entity.geo.lookup.GeoLookup
+import com.qwsdk.vastgui.entity.historical.air.HistoricalAir
+import com.qwsdk.vastgui.entity.weather.daily.WeatherDaily
+import com.qwsdk.vastgui.entity.weather.now.WeatherNow
+import com.qwsdk.vastgui.utils.Coordinate
+import com.qwsdk.vastgui.utils.Day
+import com.qwsdk.vastgui.utils.Name
+import com.xfw.vastgui.fragment.CityFragment
+import com.xfw.vastgui.log.mLogFactory
+import com.xfw.vastgui.qw
+import com.xfw.vastgui.utils.AmapUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -71,6 +76,8 @@ import kotlinx.coroutines.flow.update
 
 class HomeActivityViewModel : ViewModel() {
 
+    private val mLogger = mLogFactory.getLog(HomeActivityViewModel::class.java)
+
     /**
      * 待搜索的城市名。
      *
@@ -78,9 +85,7 @@ class HomeActivityViewModel : ViewModel() {
      */
     private val _name = MutableStateFlow("")
 
-    /**
-     * [_location] 是请求天气等数据的核心。
-     */
+    /** [_location] 是请求天气等数据的核心。 */
     private val _location = MutableStateFlow("")
 
     // AnimatedBottomBar当前选中页面
@@ -92,58 +97,53 @@ class HomeActivityViewModel : ViewModel() {
     val spin: LiveData<Boolean>
         get() = _spin
 
-    /**
-     * @see QWeatherKTX.getGeoCityLookup
-     */
-    private val _geoCityLookup: StateFlow<GeoBean?> =
+    private val _geoCityLookup: StateFlow<GeoLookup?> =
         _location.map { location ->
             if (location.isEmpty()) return@map null
-            QWeatherKTX.getGeoCityLookup(ContextHelper.getAppContext(), location).getOrNull()
+            qw.geo().cityLookup(Name(location)).getOrNull()
         }.stateIn(viewModelScope, SharingStarted.Lazily, null)
 
-    /**
-     * @see QWeatherKTX.getGeoCityLookup
-     */
     val geoCities =
         _name.map { name ->
             if (name.isEmpty()) return@map null
-            QWeatherKTX.getGeoCityLookup(ContextHelper.getAppContext(), name)
-                .getOrNull()?.locationBean
+            mLogger.d("搜索城市:$name")
+            qw.geo().cityLookup(Name(name))
+                .onFailure { mLogger.e("搜索城市遭遇异常:${it.stackTraceToString()}") }
+                .getOrNull()?.location
         }.stateIn(viewModelScope, SharingStarted.Lazily, null)
 
-    /**
-     * @see QWeatherKTX.getWeatherNow
-     */
-    val weatherNow: StateFlow<WeatherNowBean?> =
+    val weatherNow: StateFlow<WeatherNow?> =
         _location.map { location ->
             if (location.isEmpty()) return@map null
-            QWeatherKTX.getWeatherNow(ContextHelper.getAppContext(), location).getOrNull()
+            mLogger.d("当前要查询的天气地点是:$location")
+            val coordinate = location.split(",").map { it.safeToDouble(0.0) }
+            qw.weather().now(Coordinate(coordinate[0], coordinate[1])).onFailure {
+                mLogger.e("当前天气查询失败:${it.stackTraceToString()}")
+            }.getOrNull()
         }.stateIn(viewModelScope, SharingStarted.Lazily, null)
 
-    /**
-     * @see QWeatherKTX.getWeather7D
-     */
-    val weather7D: StateFlow<WeatherDailyBean?> =
+    val weather7D: StateFlow<WeatherDaily?> =
         _location.map { location ->
             if (location.isEmpty()) return@map null
-            QWeatherKTX.getWeather7D(ContextHelper.getAppContext(), location).getOrNull()
+            val coordinate = location.split(",").map { it.safeToDouble(0.0) }
+            qw.weather().daily(Day.Day7, Coordinate(coordinate[0], coordinate[1])).onFailure {
+                mLogger.e("7天天气预报查询失败", it)
+            }.getOrNull()
         }.stateIn(viewModelScope, SharingStarted.Lazily, null)
 
-    /**
-     * @see QWeatherKTX.getHistoricalAir
-     */
-    private val _historicalAir: StateFlow<HistoricalAirBean?> =
+    private val _historicalAir: StateFlow<HistoricalAir?> =
         _geoCityLookup.map { geoBean ->
             if (null == geoBean) {
                 null
             } else {
-                QWeatherKTX
-                    .getHistoricalAir(
-                        ContextHelper.getAppContext(),
-                        geoBean.locationBean[0].id,
-                        DateUtils.getDayBeforeOrAfterCurrentTime("yyyyMMdd", -1)
-                    )
-                    .getOrNull()
+                val date = DateUtils
+                    .getDayBeforeOrAfterCurrentTime("yyyyMMdd", -1)
+                val location = geoBean.location[0]
+                mLogger.d("空气质量,地点:${location.name},查询日期:${date}")
+                val id = geoBean.location[0].getLocationID()
+                qw.timeMachine().airHistory(id, date).onFailure {
+                    mLogger.d("当前查询的空气质量遭遇异常:${it.stackTraceToString()}")
+                }.getOrNull()
             }
         }.stateIn(viewModelScope, SharingStarted.Lazily, null)
 
@@ -152,7 +152,7 @@ class HomeActivityViewModel : ViewModel() {
             if (null == historicalAir) {
                 null
             } else {
-                updateAirQualityData(historicalAir.airHourlyBeans)
+                updateAirQualityData(historicalAir.airHourly)
             }
         }.stateIn(viewModelScope, SharingStarted.Lazily, null)
 
@@ -310,7 +310,7 @@ class HomeActivityViewModel : ViewModel() {
      *
      * @see chartUpdateData
      */
-    private fun updateAirQualityData(daily: List<HistoricalAirBean.AirHourlyBean>): Array<AASeriesElement> {
+    private fun updateAirQualityData(daily: List<HistoricalAir.AirHourly>): Array<AASeriesElement> {
 
         val stopsArr: Array<Any> = arrayOf(
             arrayOf(0.2, "rgba(156,107,211,0.3)")
@@ -383,10 +383,16 @@ class HomeActivityViewModel : ViewModel() {
         )
     }
 
-    fun searchPlaces(location: String) {
-        _location.update { location }
+    /**
+     * 搜索相关的城市。
+     *
+     * @param location 搜索地相关的坐标，参考 [AmapUtils.getLocation] 。
+     */
+    fun searchPlaces(coordinate: Coordinate) {
+        _location.update { coordinate.location }
     }
 
+    /** 进行城市搜索。 */
     fun searchCities(name: String) {
         _name.update { name }
     }
@@ -397,6 +403,7 @@ class HomeActivityViewModel : ViewModel() {
 
     /**
      * 设置Gps状态
+     *
      * @param gpsStatus Boolean
      */
     fun setGpsStatus(
@@ -407,6 +414,7 @@ class HomeActivityViewModel : ViewModel() {
 
     /**
      * 是否旋转主界面列表
+     *
      * @param spinList Boolean
      */
     fun spinList(spinList: Boolean) {

@@ -34,6 +34,7 @@ import com.ave.vastgui.tools.fragment.VastVbVmFragment
 import com.ave.vastgui.tools.utils.ScreenSizeUtils.getMobileScreenHeight
 import com.ave.vastgui.tools.utils.ScreenSizeUtils.getMobileScreenWidth
 import com.ave.vastgui.tools.utils.findByContext
+import com.qwsdk.vastgui.utils.Coordinate
 import com.xfw.vastgui.R
 import com.xfw.vastgui.databinding.FragmentDataBinding
 import com.xfw.vastgui.utils.AmapUtils
@@ -53,39 +54,49 @@ class DataFragment : VastVbVmFragment<FragmentDataBinding, HomeActivityViewModel
         lifecycleScope.launch {
             getViewModel().weatherNow.collect { weatherNowBean ->
                 if (null == weatherNowBean) return@collect
-                getBinding().temperatureValue.text = String.format(
-                    findByContext { getString(R.string.df_temperature) },
-                    weatherNowBean.now.temp
-                )
+                getBinding().temperatureValue.text = weatherNowBean.now?.let {
+                    String.format(
+                        findByContext { getString(R.string.df_temperature) },
+                        it.temp
+                    )
+                }
 
-                getBinding().feelsLikeValue.text = String.format(
-                    findByContext { getString(R.string.df_feelslike_temperature) },
-                    weatherNowBean.now.feelsLike
-                )
+                getBinding().feelsLikeValue.text = weatherNowBean.now?.let {
+                    String.format(
+                        findByContext { getString(R.string.df_feelslike_temperature) },
+                        it.feelsLike
+                    )
+                }
 
-                getBinding().visibilityValue.text = String.format(
-                    findByContext { getString(R.string.df_visibility) },
-                    weatherNowBean.now.vis
-                )
+                getBinding().visibilityValue.text = weatherNowBean.now?.let {
+                    String.format(
+                        findByContext { getString(R.string.df_visibility) },
+                        it.vis
+                    )
+                }
 
-                getBinding().humidityValue.text = String.format(
-                    findByContext { getString(R.string.idw_daily_humidity) },
-                    weatherNowBean.now.humidity
-                )
+                getBinding().humidityValue.text = weatherNowBean.now?.let {
+                    String.format(
+                        findByContext { getString(R.string.idw_daily_humidity) },
+                        it.humidity
+                    )
+                }
 
-                getBinding().windSpeedValue.text = String.format(
-                    findByContext { getString(R.string.df_wind_speed) },
-                    weatherNowBean.now.windSpeed
-                )
+                getBinding().windSpeedValue.text = weatherNowBean.now?.let {
+                    String.format(
+                        findByContext { getString(R.string.df_wind_speed) },
+                        it.windSpeed
+                    )
+                }
 
-                when (weatherNowBean.now.text) {
+                when (weatherNowBean.now?.text) {
                     "晴" -> {
                         getBinding().apply {
                             weatherValue.text =
                                 String.format(
                                     findByContext { getString(R.string.df_en_hans_weather) },
                                     "sun",
-                                    weatherNowBean.now.text
+                                    weatherNowBean.now!!.text
                                 )
                             weatherIcon.setImageResource(R.drawable.sun)
                         }
@@ -97,7 +108,7 @@ class DataFragment : VastVbVmFragment<FragmentDataBinding, HomeActivityViewModel
                                 String.format(
                                     findByContext { getString(R.string.df_en_hans_weather) },
                                     "cloudy",
-                                    weatherNowBean.now.text
+                                    weatherNowBean.now!!.text
                                 )
                             weatherIcon.setImageResource(R.drawable.partly_cloudy)
                         }
@@ -109,7 +120,7 @@ class DataFragment : VastVbVmFragment<FragmentDataBinding, HomeActivityViewModel
                                 String.format(
                                     findByContext { getString(R.string.df_en_hans_weather) },
                                     "showers",
-                                    weatherNowBean.now.text
+                                    weatherNowBean.now!!.text
                                 )
                             weatherIcon.setImageResource(R.drawable.light_rain)
                         }
@@ -121,7 +132,7 @@ class DataFragment : VastVbVmFragment<FragmentDataBinding, HomeActivityViewModel
                                 String.format(
                                     findByContext { getString(R.string.df_en_hans_weather) },
                                     "cloudy",
-                                    weatherNowBean.now.text
+                                    weatherNowBean.now!!.text
                                 )
                             weatherIcon.setImageResource(R.drawable.partly_cloudy)
                         }
@@ -143,7 +154,7 @@ class DataFragment : VastVbVmFragment<FragmentDataBinding, HomeActivityViewModel
     private fun initClickListener() {
         getBinding().apply {
             refreshLayout.setOnLoadMoreListener { refreshLayout ->
-                var location: String
+                var location: Coordinate
                 lifecycleScope.launch {
                     location = AmapUtils.getLocation()
                     getViewModel().searchPlaces(location)

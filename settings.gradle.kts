@@ -22,5 +22,5 @@
  * SOFTWARE.
  */
 
-include(":app", ":qweather-ktx")
+include(":app")
 rootProject.name = "XiaFengWeather"

@@ -24,25 +24,26 @@
 
 package com.xfw.vastgui.log
 
-import com.ave.vastgui.tools.log.getLogFactory
-import com.ave.vastgui.tools.log.json.GsonConverter
-import com.ave.vastgui.tools.log.plugin.LogJson
-import com.ave.vastgui.tools.log.plugin.LogPrinter
-import com.ave.vastgui.tools.log.plugin.LogSwitch
+import com.ave.vastgui.tools.log.android
+import com.log.vastgui.core.base.Logger
+import com.log.vastgui.core.getLogFactory
+import com.log.vastgui.core.json.GsonConverter
+import com.log.vastgui.core.plugin.LogJson
+import com.log.vastgui.core.plugin.LogPrinter
+import com.log.vastgui.core.plugin.LogSwitch
 
 // Author: Vast Gui
 // Email: guihy2019@gmail.com
 // Date: 2023/9/25
 
 val mLogFactory = getLogFactory {
-    install(LogSwitch){
+    install(LogSwitch) {
         open = true
     }
-    install(LogPrinter){
-        maxPrintTimes = 50
-        maxSingleLogLength = 50
+    install(LogPrinter) {
+        logger = Logger.android()
     }
-    install(LogJson){
+    install(LogJson) {
         converter = GsonConverter(true)
     }
 }
