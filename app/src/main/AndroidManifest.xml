@@ -26,6 +26,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
     <uses-feature android:name="android.hardware.location.gps" android:required="true"/>
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 访问设备状态 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- 访问WIFI状态 -->
@@ -47,12 +49,20 @@
 
         <service android:name="com.amap.api.location.APSService" android:exported="true"/>
 
-        <activity android:name=".activity.HomeActivity"
+        <activity android:name=".activity.InitActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity android:name=".activity.HomeActivity"
+            android:exported="true">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
 
         <meta-data

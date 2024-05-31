@@ -24,11 +24,7 @@
 
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.Material3.Light.NoActionBar">
-        <item name="colorPrimary">@color/main_dark</item>
-        <item name="colorPrimaryDark">@color/main_dark</item>
-        <item name="colorAccent">@color/main_dark</item>
-    </style>
+    <style name="AppTheme" parent="Theme.Material3.DynamicColors.DayNight.NoActionBar"/>
 
     <style name="CustomizePageTitle">
         <item name="android:textSize">20sp</item>

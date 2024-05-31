@@ -38,6 +38,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.ave.vastgui.tools.activity.VastVbVmActivity
 import com.ave.vastgui.tools.adapter.VastFragmentAdapter
+import com.ave.vastgui.tools.utils.isGPSOpen
 import com.ave.vastgui.tools.utils.permission.Permission
 import com.ave.vastgui.tools.utils.permission.requestMultiplePermissions
 import com.ave.vastgui.tools.view.dialog.MaterialAlertDialogBuilder
@@ -56,10 +57,16 @@ import nl.joery.animatedbottombar.AnimatedBottomBar
 
 class HomeActivity : VastVbVmActivity<ActivityHomeBinding, HomeActivityViewModel>() {
 
+    /** 应用运行所需要的权限 */
+    private val mPermissions = arrayOf(
+        Permission.ACCESS_FINE_LOCATION,
+        Permission.ACCESS_COARSE_LOCATION
+    )
+
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-            if (result.resultCode == Activity.RESULT_CANCELED || result.resultCode == Activity.RESULT_CANCELED) {
-                isGpsOPen()
+            if (result.resultCode == Activity.RESULT_CANCELED) {
+                checkGPS()
             }
         }
 
@@ -68,12 +75,13 @@ class HomeActivity : VastVbVmActivity<ActivityHomeBinding, HomeActivityViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        requestMultiplePermissions(arrayOf(Permission.ACCESS_FINE_LOCATION,Permission.ACCESS_COARSE_LOCATION)){
+        // 申请权限
+        requestMultiplePermissions(mPermissions) {
             allGranted = {
                 mLogger.i("所有权限已被授予")
             }
             denied = {
-                getSnackbar().setText("部分权限${it}被拒绝")
+                getSnackbar().setText("部分权限被拒绝，稍后会重新申请")
             }
         }
 
@@ -83,7 +91,7 @@ class HomeActivity : VastVbVmActivity<ActivityHomeBinding, HomeActivityViewModel
         setSupportActionBar(getBinding().homeToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        isGpsOPen()
+        checkGPS()
 
         getViewModel().currentPage.observe(this) {
             getBinding().viewPager.currentItem = it
@@ -146,9 +154,9 @@ class HomeActivity : VastVbVmActivity<ActivityHomeBinding, HomeActivityViewModel
         AmapUtils.destroyClient()
     }
 
-    private fun isGpsOPen() {
+    private fun checkGPS() {
         //判断GPS是否打开
-        if (AmapUtils.isOPen(this)) {
+        if (isGPSOpen()) {
             var location: Coordinate
             lifecycleScope.launch {
                 try {
@@ -164,9 +172,7 @@ class HomeActivity : VastVbVmActivity<ActivityHomeBinding, HomeActivityViewModel
             MaterialAlertDialogBuilder(this)
                 .setTitle("提示消息")
                 .setMessage("定位未打开,请前往设置界面打开")
-                .setPositiveButton(
-                    "确定"
-                ) { _, _ ->
+                .setPositiveButton("确定") { _, _ ->
                     val settingsIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                     if (packageManager.resolveActivity(
                             settingsIntent,

@@ -63,9 +63,10 @@ import com.qwsdk.vastgui.entity.weather.now.WeatherNow
 import com.qwsdk.vastgui.utils.Coordinate
 import com.qwsdk.vastgui.utils.Day
 import com.qwsdk.vastgui.utils.Name
+import com.xfw.vastgui.App
+import com.xfw.vastgui.App.Companion.qw
 import com.xfw.vastgui.fragment.CityFragment
 import com.xfw.vastgui.log.mLogFactory
-import com.xfw.vastgui.qw
 import com.xfw.vastgui.utils.AmapUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

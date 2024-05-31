@@ -22,38 +22,28 @@
  * SOFTWARE.
  */
 
-package com.xfw.vastgui
+package com.xfw.vastgui.sp
 
-import android.app.Application
-import android.content.Context
-import android.util.Log
-import com.amap.api.location.AMapLocationClient
-import com.kongzue.dialogx.DialogX
-import com.kongzue.dialogx.style.MIUIStyle
+import android.content.SharedPreferences
+import com.ave.vastgui.tools.sharedpreferences.ISharedPreferencesOwner
+import com.ave.vastgui.tools.sharedpreferences.SpNormal
+import com.ave.vastgui.tools.sharedpreferences.int
+import com.ave.vastgui.tools.sharedpreferences.string
 import com.qwsdk.vastgui.QWSdk
-import com.xfw.vastgui.log.mLogFactory
-import com.xfw.vastgui.sp.AppSp
 
-class App : Application() {
+// Author: Vast Gui
+// Email: guihy2019@gmail.com
+// Date: 2024/5/27 23:16
+// Description: 用来存储 App 相关变量
 
-    override fun onCreate() {
-        super.onCreate()
-        // 高德地图隐私更新
-        AMapLocationClient.updatePrivacyAgree(this, true)
-        AMapLocationClient.updatePrivacyShow(this, true, true)
-        // 配置 MIUI 主题
-        DialogX.globalStyle = MIUIStyle()
-        // 配置和风天气
-        Log.d("App", "当前的Key为:${AppSp.key}，当前的订阅方案是:${AppSp.plan}")
-        val plan = QWSdk.Plan.entries[AppSp.plan]
-        val qwConfiguration = QWSdk.Configuration(plan, AppSp.key) {
-            mLogFactory.getLog(QWSdk::class.java).d(it)
-        }
-        qw = QWSdk.getInstance(qwConfiguration)
-    }
+object AppSp : ISharedPreferencesOwner {
+    override val name: String = "AppSp"
+    override val kv: SharedPreferences =
+        SpNormal.getInstance(name).getSharedPreferences()
 
-    companion object {
-        lateinit var qw: QWSdk
-    }
+    /** 用来存储当前选择的方案 */
+    var plan by int(QWSdk.Plan.Free.ordinal)
 
+    /** 用来存储和风天气的key */
+    var key by string("")
 }

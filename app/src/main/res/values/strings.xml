@@ -68,4 +68,6 @@
     <!--字体文件路径-->
     <string name="ttf_icon_weather">fonts/iconWeather.ttf</string>
     <string name="ttf_icon_city">fonts/iconCity.ttf</string>
+    <string name="free_subscription">免费订阅</string>
+    <string name="standard_subscription">标准订阅</string>
 </resources>
